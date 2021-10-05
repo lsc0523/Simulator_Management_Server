@@ -1,6 +1,8 @@
 const sequelize = require('./connection');
 const { Model, DataTypes } = require('sequelize');
 const CodeModel = require('./CodeModel');
+const ProcessModel = require('./ProcessModel');
+const ProcessSegmentModel = require('./ProcessSegmentModel');
 
 class ProgramModel extends Model {
 
@@ -67,6 +69,14 @@ ProgramModel.init({
     ste_rels_dtm: {
         type: DataTypes.STRING(30),
         allowNull: true
+    },
+    pcsgid: {
+        type: DataTypes.STRING(200),
+        allowNull: true
+    },
+    procid: {
+        type: DataTypes.STRING(200),
+        allowNull : true
     }
 }, {
     sequelize,
@@ -84,5 +94,15 @@ ProgramModel.belongsTo(CodeModel, {
     foreignKey: 'proc_cd_idx_no',
     targetKey: 'idx_no',
     as: 'proc'
+})
+ProgramModel.belongsTo(ProcessModel, {
+    foreignKey: 'procid',
+    targetKey: 'procid',
+    as: 'process'
+})
+ProgramModel.belongsTo(ProcessSegmentModel, {
+    foreignKey: 'pcsgid',
+    targetKey: 'pcsgid',
+    as: 'processsegment'
 })
 module.exports = ProgramModel;

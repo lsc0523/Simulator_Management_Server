@@ -1,4 +1,6 @@
 const CodeModel = require('../models/CodeModel');
+const ProcessModel = require('../models/ProcessModel');
+const ProcessSegmentModel = require('../models/ProcessSegmentModel');
 const ProgramModel = require('../models/ProgramModel');
 const moment = require('moment');
 const { Op, QueryTypes } = require('sequelize');
@@ -17,6 +19,14 @@ const simulatorService = {
                 {
                     model: CodeModel,
                     as: 'proc'
+                },
+                {
+                    model: ProcessModel,
+                    as: 'process'
+                },
+                {
+                    model: ProcessSegmentModel,
+                    as: 'processsegment'
                 }
             ],
             order: [['idx_no', 'DESC']]
@@ -54,6 +64,14 @@ const simulatorService = {
                 {
                     model: CodeModel,
                     as: 'proc'
+                },
+                {
+                    model: ProcessModel,
+                    as: 'process'
+                },
+                {
+                    model: ProcessSegmentModel,
+                    as: 'processsegment'
                 }
             ],
             required: Object.keys(resultCondition).length !== 0,

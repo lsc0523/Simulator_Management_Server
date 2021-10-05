@@ -23,7 +23,9 @@ const simulatorController = {
                             pgsc_file_nm: data.pgsc_file_nm,
                             pgsc_file_path: data.pgsc_file_path,
                             rgst_nm: data.rgst_nm,
-                            memo_ctn: data.memo_ctn
+                            memo_ctn: data.memo_ctn,
+                            pcsgname : data.processsegment.pcsgname,
+                            procname : data.process.procname
                         }
                     })
                     resolve(filteredcode)
@@ -57,7 +59,9 @@ const simulatorController = {
                             pgsc_file_nm: data.pgsc_file_nm,
                             pgsc_file_path: data.pgsc_file_path,
                             rgst_nm: data.rgst_nm,
-                            memo_ctn: data.memo_ctn
+                            memo_ctn: data.memo_ctn,
+                            pcsgname : data.processsegment.pcsgname,
+                            procname : data.process.procname
                         }
                     })
                     resolve({
