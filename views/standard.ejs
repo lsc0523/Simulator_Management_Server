@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<% include partials/site_head %>
+
+<body>    
+    <div class="wrapper sub-wrap">
+        <!-- Header -->
+        <!-- //Header -->
+        <header class="header">
+            <% include partials/header %>
+        </header>
+        <!-- Container -->
+        <main role="main" class="container has-aside">
+            <!-- Aside -->
+            <% include standard/aside %>
+            <!-- //Aside -->
+            <div id="content" class="content board-content">
+                <!-- content-head -->
+                <div class="content-head">
+                    <div class="path-area">
+                        <div class="path">
+                            <span class="depth1"><%=firstMenuNm%></span>
+                            <span class="split">&gt;</span>
+                            <span class="depth2"><%=subMenuNm%></span>
+                            
+                        </div>
+                    </div>                    
+                </div>
+                <!-- //content-head -->
+                <!-- content-body -->
+                <div class="content-body">
+                    <% if (subMenu === 'groupCodeMgmt') { %>
+                    <%     include standard/groupCodeMgmt %>
+                    <% }                                %>
+                    <% if (subMenu === 'codeMgmt') {    %>
+                    <%     include standard/codeMgmt    %>
+                    <% }                                %>
+                    <% if (subMenu === 'siteMgmt') {    %>
+                    <%     include standard/siteMgmt    %>
+                    <% }                                %>
+                    <% if (subMenu === 'ifHist') {      %>
+                    <%     include standard/ifHist      %>
+                    <% }                                %>
+                    <% if (subMenu === 'pcMgmt') {      %>
+                    <%     include standard/pcMgmt      %>
+                    <% }                                %>
+                    <% if (subMenu === 'userMgmt') {    %>
+                    <%      include standard/userMgmt   %>
+                    <% }                                %>
+                    <% if (subMenu === 'userLog') {     %>
+                    <%     include standard/userLog     %>
+                    <% }                                %>
+                    
+                </div>
+                <!-- //content-body -->
+            </div>
+        </main>
+        <!-- //Container -->
+    </div>
+
+    <!-- Popup 공통코드 등록 및 수정 -->
+    <div id="popupGroupReg" class="popup-wrap type-basic">
+        <div class="popup w-sm">
+            <div class="popup-head">
+                <h3 class="h-tit">공통코드 등록 및 수정</h3>
+            </div>
+            <div class="popup-body">
+                <div class="popup-content board-write">
+                    <div class="tbl-area">
+                        <div class="tbl tbl-form">
+                            <table>
+                                <caption>
+                                    <strong>그룹 등록 및 수정 입력</strong>
+                                    <p>그룹코드, 그룹명, 공통코드, 코드명 순서로 제공됨</p>
+                                </caption>
+                                <colgroup>
+                                    <col style="width:100px" />
+                                    <col />
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">
+                                            <label for="popGrCd">그룹코드</label> <span style='color:red'>*</span>
+                                        </th>
+                                        <td>
+                                            <input type="hidden" name="" id="popIdxNo" value="" class="input style1 fluid" > 
+                                            <input type="hidden" name="" id="popGrIdxNo" value="" class="input style1 fluid" > 
+                                            <input type="text" name="" id="popGrCd" value="" class="input style1 fluid"  required readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <label for="popGrCdNm">그룹명</label> <span style='color:red'>*</span>
+                                        </th>
+                                        <td>
+                                            <div class="input-extend type-srch fluid">
+                                                <input type="text" name="" id="popGrCdNm" value="" class="input style1 fluid" required readonly>
+                                                <span  id="regDiv">
+                                                <button type="button" class="btn btn-srch gSearch" ><span>검색</span></button>
+                                                </span>
+                                            </div>                                       
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <label for="popCmnCd">공통코드</label> <span style='color:red'>*</span>
+                                        </th>
+                                        <td>
+                                            <input type="text" name="" id="popCmnCd" value="" class="input style1 fluid" required  maxlength="32">
+                                        </td>
+                                    </tr>                                
+                                    <tr>
+                                        <th scope="row">
+                                            <label for="popCmnCdNm">코드명</label> <span style='color:red'>*</span>
+                                        </th>
+                                        <td>
+                                            <input type="text" name="" id="popCmnCdNm" value="" class="input style1 fluid" required maxlength="32">
+                                        </td>
+                                    </tr>                                   
+                                    <tr>
+                                        <th scope="row">
+                                            <label for="popUseYn">상태</label> <span style='color:red'>*</span>
+                                        </th>
+                                        <td>
+                                            <select name="" id="popUseYn" class="select style1 fluid">
+                                                <option value="1">사용</option>
+                                                <option value="0">사용안함</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-foot">
+                <button type="button" class="btn btn-pop primary" id="codeSave"><span>저장</span></button>
+                <button type="button" class="btn btn-pop" onclick="ui.popup.close('popupGroupReg');pop_reset();"><span>닫기</span></button>
+            </div>
+            <div class="popup-close">
+                <button type="button" class="btn btn-close" onclick="ui.popup.close('popupGroupReg');pop_reset();"><span></span></button>
+            </div>
+        </div>
+        <div class="dimmer"></div>
+    </div>
+    <!-- //Popup -->
+
+    <!-- G Popup 그룹조회 -->
+    <div id="popupGroupList" class="popup-wrap type-basic">
+        <div class="popup w-sm popup-groupList">
+            <div class="popup-head">
+                <h3 class="h-tit">그룹조회</h3>
+            </div>
+            <div class="popup-body">
+                <div class="popup-content">
+                    <!-- 팝업로드후 스크롤링설정이 이상한경우
+                        ui.popup.update(팝업아이디) //호출바랍니다.
+                    -->
+                    <div class="board-head-pop">
+                        <div class="form-area">
+                            <div class="form-controls">
+                                <label for="popSchGrCdNm" class="form-tit">그룹명</label>
+                                <div class="input-extend type-srch fluid">
+                                    <input type="text" name="" id="popSchGrCdNm" value="" class="input style1 fluid">
+                                    <button type="button" class="btn btn-srch" id="gSearchBtn"><span>검색</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tbl-area">
+                        <div class="tbl tbl-list type-pop">
+                            <div class="tbl-head-fixed">
+                                <table>
+                                    <colgroup>
+                                        <col style="width:15%"/>
+                                        <col style="width:35%"/>
+                                        <col/>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">순번</th>
+                                            <th scope="col">그룹</th>
+                                            <th scope="col">그룹명</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="tbl-body-scroll">
+                                <table id="grpTable">
+                                    <colgroup>
+                                        <col style="width:15%"/>
+                                        <col style="width:35%"/>
+                                        <col/>
+                                    </colgroup>
+                                    <tbody id="grpList">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-foot">
+                <button type="button" class="btn btn-pop" onclick="ui.popup.close('popupGroupList');$('#listSearchYn').val('') ;"><span>닫기</span></button>
+            </div>
+            <div class="popup-close">
+                <button type="button" class="btn btn-close" onclick="ui.popup.close('popupGroupList');$('#listSearchYn').val('') ;"><span></span></button>
+            </div>
+        </div>
+        <div class="dimmer"></div>
+    </div>
+    <!-- //G Popup -->
+
+    <!-- Site 관리 Popup -->
+	<div id="popupSiteIfo" class="popup-wrap type-basic">
+		<div class="popup w-sm">
+			<div class="popup-head">
+				<h3 class="h-tit">SITE 정보 수정</h3>
+			</div>
+			<div class="popup-body">
+				<div class="popup-content board-write">
+					<div class="tbl-area">
+						<div class="tbl tbl-form">
+							<table>
+								<caption>
+									<strong>SITE정보 수정</strong>
+									<p>SITE, 배포예약시간, 도시 순서로 구성됨</p>
+								</caption>
+								<colgroup>
+									<col style="width:120px" />
+									<col />
+								</colgroup>
+								<tbody>
+									<tr>
+										<th scope="row">
+											<label for="popSiteCmnCd">SITE</label>
+										</th>
+										<td>
+                                            <input type="hidden" id="popIdxNo" >
+											<input type="text" name="" id="popSiteCmnCd" value="" class="input style1 fluid" readonly>
+										</td>
+									</tr>
+									<tr>
+										<th scope="row" rowspan="2">
+											<label for="sPopDate">배포 예약 시간 <span class="asterisk">*</span><br>(한국시간)</label>
+										</th>										
+										<td>
+											<div class="form-controls type-time">
+												<select title="시간" id="popRelsTm1" class="select style1">
+													
+												</select>
+												<span class="form-split">시</span>
+												<select title="분" id="popRelsTm2" class="select style1">
+													
+												</select>
+												<span class="form-split">분</span>
+												<select title="초" id="popRelsTm3" class="select style1">
+											
+												</select>
+												<span class="form-split">초</span>
+											</div>
+										</td>
+									</tr>									
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="popup-foot">
+				<button type="button" class="btn btn-pop primary" id="siteIfoSaveBtn"><span>저장</span></button>
+				<button type="button" class="btn btn-pop" onclick="ui.popup.close('popupSiteIfo');"><span>닫기</span></button>
+			</div>
+			<div class="popup-close">
+				<button type="button" class="btn btn-close" onclick="ui.popup.close('popupSiteIfo');"><span></span></button>
+			</div>
+		</div>
+		<div class="dimmer"></div>
+	</div>
+	<!-- //Popup -->
+
+    <!-- Popup Wrap 시뮬레이터 PC 등록 -->
+	<div id="popupSimulPCReg" class="popup-wrap type-basic">
+		<div class="popup w-sm">
+			<div class="popup-head">
+				<h3 class="h-tit">시뮬레이터 PC 등록</h3>
+			</div>
+			<div class="popup-body">
+				<div class="popup-content board-write">
+					<div class="tbl-area">
+						<div class="tbl tbl-form">
+							<table>
+								<caption>
+									<strong>시뮬레이터 PC 등록 입력</strong>
+									<p>사이트, ID, PC_SN, IP, 등록자, 설치위치 순서로 제공됨</p>
+								</caption>
+								<colgroup>
+									<col style="width:100px" />
+									<col />
+								</colgroup>
+								<tbody>
+									<tr>
+										<th scope="row">
+											<label for="site">사이트</label>
+                                            <span class="asterisk">*</span>
+										</th>
+										<td>
+                                            <input type="hidden" name="" id="popSimulIdxNo" value="" class="input style1 fluid" > 
+                                            <input type="hidden" name="" id="popRgstNm" value="<%=user.userName%>(<%=user.userId%>)" class="input style1 fluid" readonly>
+                                            <input type="hidden" name="" id="popUpusNm" value="<%=user.userName%>(<%=user.userId%>)" class="input style1 fluid" readonly>
+                                            <select name="" id="popSite" class="select style1 fluid" required>
+                                                
+                                            </select>
+										</td>
+									</tr>									
+									<tr>
+										<th scope="row">
+											<label for="popPcNm">PC 이름</label>
+                                            <span class="asterisk">*</span>
+										</th>
+										<td>
+                                            <input type="text" name="" id="popPcNm" value="" required class="input style1 fluid" >
+                                        </td>
+									</tr>									
+									<tr>
+										<th scope="row">
+											<label for="popPcIp">IP</label>
+                                            <span class="asterisk">*</span>
+										</th>
+										<td>
+                                            <input type="text" name="" id="popPcIp" value="" required class="input style1 fluid" >
+                                        </td>
+									</tr>									
+                                    <tr>
+										<th scope="row">
+											<label for="popLocDesc">설치위치</label>
+										</th>
+										<td>
+											<input type="text" name="" id="popLocDesc" value="" class="input style1 fluid">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div> 
+			</div>
+			<div class="popup-foot">
+				<button type="button" class="btn btn-pop primary" id="pcSave"><span>저장</span></button>
+				<button type="button" class="btn btn-pop" onclick="ui.popup.close('popupSimulPCReg');pop_pc_reset();"><span>닫기</span></button>
+			</div>
+			<div class="popup-close">
+				<button type="button" class="btn btn-close" onclick="ui.popup.close('popupSimulPCReg');pop_pc_reset();"><span></span></button>
+			</div>
+		</div>
+		<div class="dimmer"></div>
+	</div>
+	<!-- //Popup Wrap -->
+
+    <!-- Popup Wrap 사용자 권한 등록/수정 -->
+	<div id="popupUserAuthority" class="popup-wrap type-basic">
+		<div class="popup w-sm">
+			<div class="popup-head">
+				<h3 class="h-tit">사용자 권한 등록/수정</h3>
+			</div>
+			<div class="popup-body">
+				<div class="popup-content board-write">
+					<div class="tbl-area">
+						<div class="tbl tbl-form">
+							<table>
+								<caption>
+									<strong>사용자 권한 등록/수정 입력</strong>
+									<p>사용자 권한, ID, 이름, 조직, 등록자 순서로 제공됨</p>
+								</caption>
+								<colgroup>
+									<col style="width:100px" />
+									<col />
+								</colgroup>
+								<tbody>
+									<tr>
+										<th scope="row">
+											<label for="popAuth">사용자 권한</label>
+										</th>
+										<td>
+                                            <select name="" id="popAuth" class="select style1 fluid">
+                                                <option value="">Admin</option>
+                                            </select>
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">
+											<label for="popId">ID</label>
+                                            <span class="asterisk">*</span>
+										</th>
+										<td>
+											<div class="flex">
+												<input type="text" name="" id="popId" value="" class="input style1 fluid" required>
+                                                <input type="hidden" name="" id="popIdxNo" value="" class="input style1 fluid">
+                                                <input type="hidden" id="popEmpNo">   
+                                                <input type="hidden" name="" id="popAuthRgstNm" value="<%=user.userName%>(<%=user.userId%>)" class="input style1 fluid" readonly>
+                                                <input type="hidden" name="" id="popAuthUpusNm" value="<%=user.userName%>(<%=user.userId%>)" class="input style1 fluid" readonly>
+                                                                                         
+												<button type="button" class="btn btn-srch2" id="popSearchId"><span>ID 조회</span></button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">
+											<label for="popEmpNm">이름</label>
+                                            <span class="asterisk">*</span>
+										</th>
+										<td>
+											<input type="text" name="" id="popEmpNm" value="" class="input style1 fluid" required>
+										</td>
+									</tr>
+									<!-- Case 수정 -->
+									<tr>
+										<th scope="row">
+											<label for="popOrgNm">조직</label>
+										</th>
+										<td>
+											<input type="text" name="" id="popOrgNm" value="" class="input style1 fluid" >
+										</td>
+									</tr>									
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="popup-foot">
+				<button type="button" class="btn btn-pop primary" id="userSave"><span>저장</span></button>
+				<button type="button" class="btn btn-pop" onclick="ui.popup.close('popupUserAuthority');userAuth_pop_reset();"><span>닫기</span></button>
+			</div>
+			<div class="popup-close">
+				<button type="button" class="btn btn-close" onclick="ui.popup.close('popupUserAuthority');userAuth_pop_reset();"><span></span></button>
+			</div>
+		</div>
+		<div class="dimmer"></div>
+	</div>
+	<!-- //Popup Wrap -->
+</body>
+
+<% include partials/site_footer %>
+<script>
+    $(document).ready(function(){
+        $(".gnb-area .node-list .node-item").removeClass("is-current");
+        $(".gnb > ul > li").text(function(index,text){            
+            if(text === '기준정보 관리'){
+                $(this).addClass('is-current');
+            }
+            
+        })
+        $(".node-group > ul > li").text(function(index,text){
+            
+            if('그룹 코드 관리' === '<%=subMenuNm%>'){
+                if(text === '코드 관리' ){
+                    $(".node-group > ul > li").removeClass('is-current');   
+                    $(this).addClass('is-current');
+                }
+            }else if(text === '<%=subMenuNm%>'){ 
+                $(".node-group > ul > li").removeClass('is-current');               
+                $(this).addClass('is-current');
+            }
+        })
+
+        if('<%=subMenu%>' === 'codeMgmt'){
+                      
+            document.getElementById("content").setAttribute("class", "content board-content codemgmt-content");
+            
+        }else if('<%=subMenu%>' === 'userMgmt'){
+            document.getElementById("content").setAttribute("class", "content board-content usermgmt2-content");
+        // }else if('<%=subMenu%>' === 'mainImage'){
+        //     $(".srch-toggle").addClass("is-hidden")
+        //     document.getElementById("content").setAttribute("class", "content board-content2 introreg-content");
+        // }else if('<%=subMenu%>' === 'noticeMgmt'){
+        //     document.getElementById("content").setAttribute("class", "content board-content noti-content");
+        // }else if('<%=subMenu%>' === 'noticeForm'){
+        //     $(".srch-toggle").addClass("is-hidden")
+        //     document.getElementById("content").setAttribute("class", "content board-content2 notimgmt-content");
+        // }else if('<%=subMenu%>' === 'appDownMgmt'){
+        //     $(".srch-toggle").addClass("is-hidden")
+        //     document.getElementById("content").setAttribute("class", "content board-content2 introreg-content");
+        
+        }else{
+            document.getElementById("content").setAttribute("class", "content board-content groupmgmt-content");
+        }
+
+    });
+    function doAttachFile(){
+		$('#attach-file-group').trigger('click');	
+	}
+
+</script>
+
+</html>

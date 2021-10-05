@@ -1,0 +1,46 @@
+<!-- <script src="/libs/jquery.min.js"></script> -->
+<script type="text/javascript" src="/libs/moment.js"></script>
+<script type="text/javascript" src="/libs/jquery/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="/libs/jquery/jquery.form.min.js"></script>
+
+<script src="/js/responsive/js/libs/librurys.min.js"></script>
+<script src="/js/responsive/js/ui/ui.common.js"></script>
+
+<!-- Alert -->
+<div id="popupAlert" class="popup-wrap type-alert">
+	<section class="popup">
+		<div class="popup-body">
+			<div class="popup-content">
+				삭제되었습니다.
+			</div>
+		</div>
+		<div class="popup-foot">
+			<button type="button" class="btn btn-pop primary" onclick="ui.popup.close('popupAlert')"><span>확인</span></button>
+		</div>
+	</section>
+	<div class="dimmer"></div>
+</div>
+<!-- //Alert -->
+
+<!-- Confirm -->
+<div id="popupConfirm" class="popup-wrap type-confirm">
+	<section class="popup">
+		<div class="popup-body">
+			<div class="popup-content">
+				정말 삭제하시겠습니까?
+			</div>
+		</div>
+		<div class="popup-foot">
+			<button type="button" class="btn btn-pop primary" onclick="$('#confirm_act').trigger('click');ui.popup.close('popupConfirm')"><span>확인</span></button>
+			<button type="button" class="btn btn-pop" onclick="ui.popup.close('popupConfirm')"><span>취소</span></button>
+		</div>
+	</section>
+	<div class="dimmer"></div>
+</div>
+<!-- //Confirm -->
+<script>
+function go_page(page){
+	$("#page").val(page);
+	$("#page").trigger('click');
+}
+</script>

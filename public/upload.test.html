@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>upload Test</title>
+    <style>
+        #main-img-wrp img {
+            width: 500px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="main-img-wrp"></div>
+    <input id="main-img-input" type="file" />
+    <button id="btn-upload-img">upload</button>
+
+</body>
+<script type="module">
+    import uploadService from '/js/services/rest/uploadService.mjs'
+    (function () {
+
+        const uploadBtn = document.getElementById("btn-upload-img");
+        const imgInput = document.getElementById("main-img-input");
+        const imgWrp = document.getElementById("main-img-wrp");
+
+        uploadBtn.addEventListener("click", (e) => {
+            if (imgInput.value) {
+                uploadService.uploadMainImg(imgInput.files[0])
+                    .then(() => {
+                        imgWrp.innerHTML = ""
+                        const img = document.createElement("img");
+                        img.setAttribute("src", "/api/download/mainImg");
+                        imgWrp.appendChild(img);
+                    })
+                    .catch((err) => {
+                        console.error(err)
+                        alert("업로드 실패")
+                    })
+            }
+        })
+    })();
+</script>
+<script type="module" src="/js/services/rest/uploadService.mjs"></script>
+
+</html>

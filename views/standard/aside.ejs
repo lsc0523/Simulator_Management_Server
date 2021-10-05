@@ -1,0 +1,42 @@
+<!-- Aside -->
+<aside class="aside">
+	<div class="aside-inner">
+		<div class="aside-head">
+			<h2 class="h-tit">기준 정보 관리</h2>
+		</div>
+		<div class="aside-scroll" id="menuNm">
+			<nav class="snb">
+				<div class="snb-group menu1" >
+					<h3 class="node-tit">기준정보 관리 <button type="button" class="btn btn-snb-toggle"><span></span></button></h3>
+					<div class="node-group">
+						<ul class="node-list">
+							<% if(user.type === 'ADMIN') { %>  
+							<li class="node-item"><a href="/page/standard/codeMgmt">코드 관리</a></li>
+							<li class="node-item"><a href="/page/standard/siteMgmt">Site 관리</a></li>
+							<% } %>
+							<li class="node-item"><a href="/page/standard/ifHist">인터페이스 이력조회</a></li>							
+						</ul>
+					</div>
+				</div>
+				<div class="snb-group menu2">
+					<h3 class="node-tit">시뮬레이터 PC 관리 <button type="button" class="btn btn-snb-toggle"><span></span></button></h3>
+					<div class="node-group">
+						<ul class="node-list">							
+							<li class="node-item"><a href="/page/standard/pcMgmt">시뮬레이터 PC 관리</a></li>	
+						</ul>
+					</div>
+				</div>
+				<div class="snb-group menu3">
+					<h3 class="node-tit">사용자 관리 <button type="button" class="btn btn-snb-toggle"><span></span></button></h3>
+					<div class="node-group">
+						<ul class="node-list">
+							<li class="node-item"><a href="/page/standard/userMgmt">사용자 권한 관리</a></li>
+							<li class="node-item"><a href="/page/standard/userLog">사용자 로그</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</div>	
+</aside>
+<!-- //Aside -->

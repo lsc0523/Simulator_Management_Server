@@ -1,0 +1,60 @@
+<!-- Tab Nav -->
+<div class="tab-nav tabs">
+	<ul class="tab-list">
+		<li data-id="tab05_1" aria-selected="true" class="tab is-active">
+			<a href="/page/standard/groupCodeMgmt" class="btn"><span>그룹코드 관리</span></a>
+		</li>
+		<li data-id="tab05_2" aria-selected="false" class="tab">
+			<a href="/page/standard/codeMgmt" class="btn"><span>코드 관리</span></a>
+		</li>
+	</ul>
+</div>
+<!-- Tab Nav -->
+<!-- 검색영역 -->
+<div class="board-srch">
+	<!-- <div class="btn-area">
+		<button type="button" class="btn btn-submit type-reg" onclick="ui.popup.open('popupGroupReg')"><span>등록</span></button>
+	</div> -->
+</div>
+<!-- //검색영역 -->
+<!-- 검색목록 -->
+<div class="board-list">
+	<div class="tbl-area">
+		<div class="tbl tbl-list">
+			<div class="tbl-head-fixed">
+				<table>
+					<colgroup>
+						<col style="width:80px" />
+						<col style="width:auto" />
+						<col style="width:15%" />
+						<col style="width:15%" />						
+					</colgroup>
+					<thead>
+						<tr>							
+							<th scope="col">번호</th>
+							<th scope="col">그룹코드</th>
+							<th scope="col">그룹명</th>
+							<th scope="col">상태</th>							
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="tbl-body-scroll">
+				<table>
+					<colgroup>
+						<col style="width:80px" />
+						<col style="width:auto" />
+						<col style="width:15%" />
+						<col style="width:15%" />
+					</colgroup>
+					<tbody id="data-list">
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<% include ../partials/pagenation.ejs %>
+	</div>
+</div>
+<script type="module" src="/js/views/groupCodeMgmt.js"></script>
+

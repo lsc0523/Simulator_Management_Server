@@ -1,0 +1,128 @@
+<!-- Tab Nav -->
+<div class="tab-nav tabs">
+	<ul class="tab-list">
+		<li data-id="tab05_1" aria-selected="true" class="tab">
+			<a href="/page/standard/groupCodeMgmt" class="btn"><span>그룹코드 관리</span></a>
+		</li>
+		<li data-id="tab05_2" aria-selected="false" class="tab is-active">
+			<a href="/page/standard/codeMgmt" class="btn"><span>코드 관리</span></a>
+		</li>
+	</ul>
+</div>
+<!-- Tab Nav -->
+<!-- 검색영역 -->
+<div class="board-srch">
+    <div class="form-area">
+        <div class="form-controls">
+            <label for="schGrCd" class="form-tit">그룹코드</label>
+            <input type="text" id="schGrCd" class="input style1" readonly>
+        </div>
+        <div class="form-controls">
+            <label for="schGrCdNm" class="form-tit">그룹명</label>
+            <span class="input-extend type-srch">
+                <input type="text" id="schGrCdNm" class="input style1">
+                <input type="hidden" id="listSearchYn" class="input style1" >
+                <button type="button" class="btn btn-srch gSearch" value="listSearch"><span>검색</span></button>
+            </span>
+        </div>
+    </div>
+    <div class="btn-area">
+        <button type="button" class="btn btn-submit type-reg" onclick="ui.popup.open('popupGroupReg')"><span>등록</span></button>
+        <button type="button" class="btn btn-submit type-srch" id="listSearch"><span>조회</span></button>
+    </div>
+</div>
+<!-- //검색영역 -->
+
+<!-- 검색목록 -->
+<div class="board-list">
+    <div class="tbl-area">
+        <div class="tbl tbl-list">
+            <div class="tbl-head-fixed">
+                <table>
+                    <colgroup>
+                        <col style="width:8%" />
+                        <col style="width:11%" />
+                        <col style="width:auto" />
+                        <col style="width:20%" />
+                        <col style="width:20%" />
+                        <col style="width:11%" />                        
+                    </colgroup>	
+                    <thead>
+                        <tr>
+                            <!-- 20201028 항목 번호,상태 문구변경 -->
+                            <th scope="col">번호</th>
+                            <th scope="col">그룹코드</th>
+                            <th scope="col">그룹명</th>
+                            <th scope="col">공통코드</th>
+                            <th scope="col">공통코드명</th>
+                            <th scope="col">상태</th>                            
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="tbl-body-scroll">
+                <table>
+                    <colgroup>
+                        <col style="width:8%" />
+                        <col style="width:11%" />
+                        <col style="width:auto" />
+                        <col style="width:20%" />
+                        <col style="width:20%" />
+                        <col style="width:11%" />
+                    </colgroup>	
+                    <tbody id="data-list">
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <% include ../partials/pagenation.ejs %>
+    </div>
+</div>
+<!-- //검색목록 -->
+
+<script>
+function view_pop(idx_no,cmn_cd,cmn_cd_nm,use_yn,gr_cd,gr_cd_nm){
+    
+    $("#popupGroupReg #popIdxNo").val(idx_no);
+    $("#popupGroupReg #regDiv").hide();
+    $("#popupGroupReg #popCmnCd").val(cmn_cd);
+    $("#popupGroupReg #popCmnCdNm").val(cmn_cd_nm);
+    $("#popupGroupReg #popGrCd").val(gr_cd);
+    $("#popupGroupReg #popGrCdNm").val(gr_cd_nm);
+    $("#popupGroupReg #popUseYn").val(use_yn===1?1:0);
+    
+    $("#popCmnCd").prop("readonly",true);
+    ui.popup.open('popupGroupReg');
+}
+function pop_reset(){
+    $("#regDiv").show();
+    
+    $("#popCmnCd").prop("readonly",false);
+    $("#popIdxNo").val('');
+    $("#popGrCd").val('');
+    $("#popGrCdNm").val('');
+    $("#popCmnCd").val('');
+    $("#popCmnCdNm").val('');
+    $("#popUseYn").val('1');    
+    $("#listSearchYn").val('') ;
+}
+
+function choose_set(id, grCd, grCdNm){
+    $(".type-alert .popup-content").text("선택되었습니다.");
+    ui.popup.open('popupAlert');
+
+    if($("#listSearchYn").val() == 'Y'){
+        $("#schGrCd").val(grCd);
+        $("#schGrCdNm").val(grCdNm);
+    }else{
+        $("#popGrIdxNo").val(id);
+        $("#popGrCd").val(grCd);
+        $("#popGrCdNm").val(grCdNm);
+    }
+    $("#listSearchYn").val('') ;
+    ui.popup.close('popupGroupList');
+
+}
+</script>
+<script type="module" src="/js/views/codeMgmt.js"></script>

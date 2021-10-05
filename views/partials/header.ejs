@@ -1,0 +1,115 @@
+<!-- SkipNav -->
+<div class="skipNav">
+    <a href="#content">Skip Navigation Go Content</a>
+</div>
+<!-- //SkipNav -->
+
+<div class="header-inner">    
+    <div class="logo-area">
+        <h1 class="logo" id="ci">
+            <img src="../../img/com/logo-header.png" alt="시뮬레이터 관리 시스템">
+        </h1>
+    </div>
+    
+    <div class="gnb-area">
+        <nav class="gnb">
+            <ul class="node-list">
+                <% if(user.type) { %>
+                <li class="node-item is-current"><a href="/page/dashboard/" class="node-link type-menu1">DASHBOARD</a></li>
+                <% if(user.type === 'ENGINEER' || user.type === 'MG_ENGINEER' || user.type === 'ADMIN') { %>
+                <li class="node-item"><a href="/page/simulator/" class="node-link type-menu2">시뮬레이터</a></li>
+                <% } %>
+                <li class="node-item"><a href="/page/result/" class="node-link type-menu3">교육 결과</a></li>
+                <% if(user.type === 'MG_ENGINEER' || user.type === 'ADMIN') { %>                
+                <li class="node-item"><a href="/page/standard/groupCodeMgmt" class="node-link type-menu4">기준정보 관리</a></li>
+                <% } %>
+                <% } %>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="util-area">
+        <li class="node-item"> <%=user.userName%> <%=user.grade%>님 안녕하세요</li>        
+    </div>
+</div>
+
+<script type="module" src="/js/views/common.js"></script>
+<script>
+    function pagenation(page, t_pageNum){
+        $(".pagenation").css('display','');
+        //paging
+        const pageArea = $(".pagenation .num-area");        
+        innerHtml = '';
+                
+        var pageGroup = Math.ceil(page/10); 
+        var end_page = pageGroup * 10;
+        var start_page = end_page-(10-1);
+        if(end_page > t_pageNum) end_page = t_pageNum
+
+        if(t_pageNum>0){
+            for(var i=start_page ; i<=end_page; i++){
+                var isCur = "";
+                
+                if(i == page) {
+                    isCur = 'is-current';                    
+                }                
+                
+                innerHtml += ` <button type="button" class="btn btn-num ${isCur}" onClick="go_page(${i});"><span>${i}</span></button>`;
+            }
+                                 
+            pageArea.html(innerHtml);
+            if(t_pageNum == 1){
+                $(".pagenation .btn-area .btn-prev1").prop('disabled',true);
+                $(".pagenation .btn-area .btn-prev2").prop('disabled',true);
+                $(".pagenation .btn-area .btn-next1").prop('disabled',true);
+                $(".pagenation .btn-area .btn-next2").prop('disabled',true);
+            }else{
+                if(page == 1){
+                    $(".pagenation .btn-area .btn-prev1").prop('disabled',true);
+                    $(".pagenation .btn-area .btn-prev2").prop('disabled',true);
+                    $(".pagenation .btn-area .btn-next1").prop('disabled',false);
+                    $(".pagenation .btn-area .btn-next2").prop('disabled',false);
+                }else if(page>1 && t_pageNum>page){
+                    $(".pagenation .btn-area .btn-prev1").prop('disabled',false);
+                    $(".pagenation .btn-area .btn-prev2").prop('disabled',false);
+                    $(".pagenation .btn-area .btn-next1").prop('disabled',false);
+                    $(".pagenation .btn-area .btn-next2").prop('disabled',false);
+                }else if(page>1 && t_pageNum==page){
+                    $(".pagenation .btn-area .btn-prev1").prop('disabled',false);
+                    $(".pagenation .btn-area .btn-prev2").prop('disabled',false);
+                    $(".pagenation .btn-area .btn-next1").prop('disabled',true);
+                    $(".pagenation .btn-area .btn-next2").prop('disabled',true);
+                }
+            } 
+        }else{
+            $(".pagenation").css('display','none');
+        }
+    }
+
+    function FunLoadingBarStart() {        
+        var backHeight = $(document).height(); //뒷 배경의 상하 폭
+        var backWidth = window.document.body.clientWidth; //뒷 배경의 좌우 폭        
+       // var backGroundCover = "<div id='back'></div>"; //뒷 배경을 감쌀 커버
+        var loadingBarImage = ''; //가운데 띄워 줄 이미지
+        loadingBarImage += "<div id='loadingBar' class='popup-wrap type-basic is-active'>";
+        loadingBarImage += " <img src='/img/com/loadingbar.gif'/>"; //로딩 바 이미지
+        loadingBarImage += "</div>";
+        //$('body').append(backGroundCover).append(loadingBarImage);
+        $('body').append(loadingBarImage);
+        //$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });
+        //$('#back').show();
+        $('#loadingBar').show();
+    }
+
+    
+    function FunLoadingBarEnd() {
+        $('#loadingBar').hide();
+        $('#loadingBar').remove();
+        /*
+        $('#back, #loadingBar').hide();
+        $('#back, #loadingBar').remove();
+        */
+    }
+    
+
+</script>

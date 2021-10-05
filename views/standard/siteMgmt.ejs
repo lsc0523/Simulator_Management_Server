@@ -1,0 +1,85 @@
+<div class="board-list">
+    <!-- <div class="tit-area border-gray">
+        <h3 class="h-tit">Site 공통 정보 관리</h3>
+    </div>
+    <div class="board-srch">
+        <div class="form-controls">
+            <label for="sFormTime" class="form-tit">헬스체크 주기 (분)</label>
+            <select name="" id="sFormTime" class="select style1 w-lg">
+                <option value="">30분</option>
+                <option value="">60분</option>
+            </select>
+        </div>
+        <div class="form-controls">
+            <label for="sFormYear" class="form-tit">훈련결과 보관 기관</label>
+            <select name="" id="sFormYear" class="select style1 w-lg">
+                <option value="">1년</option>
+                <option value="">2년</option>
+                <option value="">3년</option>
+                <option value="">4년</option>
+            </select>
+        </div>
+        <div class="btn-area">
+            <button type="button" class="btn btn-submit"><span>저장</span></button>
+        </div>
+    </div> -->
+    <div class="tit-area border-gray "> <!--mt70-->
+        <h3 class="h-tit">Site별 자동배포시점 관리</h3>        
+    </div>    
+    <div class="tbl-area">            
+        <div class="tbl tbl-list">
+            <table>
+                <colgroup>                    
+                    <col style="width:20%">
+                    <col style="width:33.33%">
+                    <col style="width:auto">
+                </colgroup>
+                <thead>
+                    <tr>                        
+                        <th scope="col" rowspan="2">SITE</th>
+                        <th scope="col" colspan="2">배포 기준 시간</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">한국 시간 기준</th>
+                        <th scope="col">현지 시간 기준</th>
+                    </tr>
+                </thead>
+                <tbody id="data-list">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+function site_view_pop(idx_no,cmn_cd,rels_tm){
+    let innerTm1 = '';
+    let innerTm2 = '';
+    let innerTm3 = '';
+
+    let splitTm = rels_tm.split(':');
+    
+    for(let i=0; i<24; i++){        
+        innerTm1 += '<option value="'+((i.toString().length == 1) ? '0'+i : i)+'">'+((i.toString().length == 1) ? '0'+i : i) +'</option>';
+    }
+    $("#popupSiteIfo #popRelsTm1").html(innerTm1);
+
+    for(let i=0; i<60; i++){        
+        innerTm1 += '<option value="'+((i.toString().length == 1) ? '0'+i : i)+'">'+((i.toString().length == 1) ? '0'+i : i) +'</option>';
+    }
+    $("#popupSiteIfo #popRelsTm2").html(innerTm1);
+    for(let i=0; i<60; i++){        
+        innerTm1 += '<option value="'+((i.toString().length == 1) ? '0'+i : i)+'">'+((i.toString().length == 1) ? '0'+i : i) +'</option>';
+    }
+    $("#popupSiteIfo #popRelsTm3").html(innerTm1);
+
+    $("#popupSiteIfo #popIdxNo").val(idx_no);    
+    $("#popupSiteIfo #popSiteCmnCd").val(cmn_cd);
+    $("#popupSiteIfo #popRelsTm1").val(splitTm[0]);
+    $("#popupSiteIfo #popRelsTm2").val(splitTm[1]);
+    $("#popupSiteIfo #popRelsTm3").val(splitTm[2]);
+    
+    ui.popup.open('popupSiteIfo');
+}
+</script>
+<script type="module" src="/js/views/siteMgmt.js"></script>

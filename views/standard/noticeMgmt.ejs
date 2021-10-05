@@ -1,0 +1,80 @@
+<!-- 제목영역 -->
+<div class="board-head">
+    <div class="form-area">
+        <div class="form-controls">
+            <label for="sStartDate" class="form-tit">기간</label>
+            <span class="input-extend type-date">
+                <input type="text" name="" id="sStartDate" title="Start Date" class="input style1">
+            </span>
+            <span class="form-split">~</span>
+            <span class="input-extend type-date">
+                <input type="text" name="" id="sEndDate" title="End Date" class="input style1">
+            </span>
+        </div>
+    </div>
+    <div class="btn-area">
+        <button type="button" class="btn btn-submit type-srch" id="search"><span>SEARCH</span></button> <!-- 20201101 검색조회 마크업변경 -->
+        <button type="button" class="btn btn-submit" onclick="location.href='/page/mgmt/noticeForm';"><span>신규등록</span></button>
+        <button type="button" class="btn btn-submit" id="del"><span>삭제</span></button>
+        <input type="hidden"  id="confirm_act" value="등록/삭제">
+    </div>
+</div>
+<!-- //제목영역 -->
+<!-- 검색목록 -->
+<div class="board-list">
+    <div class="tbl-area">
+        <div class="tbl tbl-list">
+            <div class="tbl-head-fixed">
+                <table>
+                    <colgroup>
+                        <col style="width:5%" />
+                        <col style="width:5%" />
+                        <col style="width:7%" />
+                        <col style="width:auto" />
+                        <col style="width:8%" />
+                        <col style="width:8%" />
+                        <col style="width:8%" />
+                        <col style="width:16%" />
+                        <col style="width:10%" />
+                    </colgroup>	
+                    <thead>
+                        <tr>
+                            <th scope="col">선택</th>
+                            <th scope="col">번호</th>
+                            <th scope="col">분류</th>
+                            <th scope="col">제목</th>
+                            <th scope="col">전시 상태</th>
+                            <th scope="col">전시 시작일</th>
+                            <th scope="col">전시 종료일</th>
+                            <th scope="col">등록일</th>
+                            <th scope="col">작성자</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="tbl-body-scroll">
+                <table>
+                    <colgroup>
+                        <col style="width:5%" />
+                        <col style="width:5%" />
+                        <col style="width:7%" />
+                        <col style="width:auto" />
+                        <col style="width:8%" />
+                        <col style="width:8%" />
+                        <col style="width:8%" />
+                        <col style="width:16%" />
+                        <col style="width:10%" />
+                    </colgroup>	
+                    <tbody id="mgmt-tbody">
+                        
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        
+    </div>
+    <script>
+  
+    </script>
+    <script type="module" src="/js/views/noticeMgmt.js"></script>

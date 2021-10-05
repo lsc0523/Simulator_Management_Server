@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+
+<% include partials/site_head %>
+
+<body>    
+    <div class="wrapper sub-wrap">
+        <!-- Header -->
+        <!-- //Header -->
+        <header class="header">
+            <% include partials/header %>
+        </header>
+        <!-- Container -->
+        <main role="main" class="container">
+            
+            <div id="content" class="content">
+                <!-- content-body -->
+                <div class="content-body">
+                   <!-- 검색목록 -->
+					<div class="board-list">
+                        <div class="tit-area">
+                            <h3 class="h-tit">교육 결과</h3>
+                        </div>
+                        <!-- 검색영역 -->
+                        <div class="board-srch">
+                            <div class="form-area">
+                                <div class="form-controls">
+                                    <label for="schSite" class="form-tit">SITE</label>
+                                    <select name="" id="schSite" class="select style1 w-lg">
+                                        <option value="">전체</option>
+                                    </select>
+                                </div>
+                                <div class="form-controls">
+                                    <label for="schPc" class="form-tit">PC-ID</label>
+                                    <select name="" id="schPc" class="select style1 w-lg">
+                                        <option value="">전체</option>
+                                    </select>
+                                </div>
+                                <div class="form-controls">
+                                    <label for="schProc" class="form-tit">공정</label>
+                                    <select name="" id="schProc" class="select style1 w-lg">
+                                        <option value="">전체</option>
+                                    </select>
+                                </div>
+								<div class="space responsive"></div>
+                                <div class="form-controls">
+                                    <span class="form-schMisnNm">검색 조건</span>
+                                    <span class="radio style1">
+                                        <input type="radio" id="schType1"  name="schType" value="Users" checked>
+                                        <label for="schType1">
+                                            <span>By Users</span>
+                                        </label>
+                                    </span>
+                                    <span class="radio style1">
+                                        <input type="radio" id="schType2" name="schType" value="Missions">
+                                        <label for="schType2">
+                                            <span>By Missions</span>
+                                        </label>
+                                    </span>
+                                </div>                               
+                                <div class="form-controls">
+                                    <label for="schStDt" class="form-tit">검색 기간</label>
+                                    <span class="input-extend type-date">
+                                        <input type="text" name="" id="schStDt" class="input style1">
+                                    </span>
+                                    <span class="form-split">~</span>
+                                    <span class="input-extend type-date">
+                                        <input type="text" name="" id="schEndDt" class="input style1">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="btn-area">
+                                <button type="button" class="btn btn-submit type-srch" id="btnSearch"><span>조회</span></button>
+                            </div>
+                        </div>
+                        <!-- //검색영역 -->
+						<div class="headnote style1">
+                            <div>
+                                <p>Training Result</p>
+                            </div>
+                            <div class="btn-area">
+                                <!-- <button type="button" class="btn btn-submit"><span>교육 결과 보기</span></button> -->
+                                <button type="button" class="btn btn-submit type-excel" id="excelDown"><span>Excel 다운로드</span></button>
+                            </div>
+						</div>
+						<div class="tbl-area">
+							<div class="tbl tbl-list">
+								<div class="tbl-head-fixed">
+									<table>
+										<colgroup>
+											<col style="width:10%" />
+											<col style="width:15%" />
+											<col style="width:15%" />
+											<col style="width:auto" />
+											<col style="width:12%" />											
+											<col style="width:12%" />
+										</colgroup>
+										<thead>
+											<tr>
+												<th scope="col">사이트</th>
+												<th scope="col">PC-ID</th>
+												<th scope="col">공정</th>
+												<th scope="col" id="schTypeText">E-mail (ID)</th>
+												<th scope="col">Count</th>												
+												<th scope="col"></th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div class="tbl-body-scroll">
+									<table>
+										<colgroup>
+											<col style="width:10%" />
+											<col style="width:15%" />
+											<col style="width:15%" />
+											<col style="width:auto" />
+                                            <col style="width:12%" />											
+											<col style="width:12%" />
+										</colgroup>
+										<tbody id="data-list">
+												
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<% include partials/pagenation.ejs %>
+						</div>
+					</div>
+					<!-- //검색목록 -->
+                    
+                </div>
+                <!-- //content-body -->
+            </div>
+        </main>
+        <!-- //Container -->
+    </div>
+
+    <form name="dtlForm" id="dtlForm" method="POST" action="/page/result/resultDtl">
+        <input type="hidden" name="siteNm">
+        <input type="hidden" name="pcNm">
+        <input type="hidden" name="procNm">
+
+        <input type="hidden" name="schSteCdIdxNo">
+        <input type="hidden" name="schProcCdIdxNo">
+        <input type="hidden" name="schPcIdxNo">
+        <input type="hidden" name="schType">
+        <input type="hidden" name="schDataVal">
+        <input type="hidden" name="schStDt">
+        <input type="hidden" name="schEndDt">
+        <input type="hidden" name="page" value="1">
+    </form>
+</body>
+
+<% include partials/site_footer %>
+
+<script type="module" src="/js/views/result.js"></script>
+<script>
+    $(document).ready(function(){
+		$(".gnb-area .node-list .node-item").removeClass("is-current");
+        $(".gnb > ul > li").text(function(index,text){            
+            if(text === '교육 결과'){
+                $(this).addClass('is-current');
+            }            
+        })
+	})
+
+    function dtlSet(siteNm, pcNm, procNm, ste_cd_idx_no, proc_cd_idx_no, pc_idx_no, sch_type_data){
+        $("#dtlForm > input[name='siteNm']").val(siteNm);
+        $("#dtlForm > input[name='pcNm']").val(pcNm);
+        $("#dtlForm > input[name='procNm']").val(procNm);
+        
+        $("#dtlForm > input[name='schSteCdIdxNo']").val(ste_cd_idx_no);
+        $("#dtlForm > input[name='schProcCdIdxNo']").val(proc_cd_idx_no);
+        $("#dtlForm > input[name='schPcIdxNo']").val(pc_idx_no);
+        $("#dtlForm > input[name='schType']").val($('input:radio[name=schType]:checked').val());
+        $("#dtlForm > input[name='schDataVal']").val(sch_type_data);
+        $("#dtlForm > input[name='schStDt']").val($('#schStDt').val() !== '' ?  $('#schStDt').val().replaceAll('-', '') : $('#schStDt').val());
+        $("#dtlForm > input[name='schEndDt']").val($('#schEndDt').val()  !== '' ?  $('#schEndDt').val().replaceAll('-', '') : $('#schEndDt').val());
+
+       document.forms.dtlForm.submit();
+
+    }
+</script>
+
+</html>

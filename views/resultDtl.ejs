@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+
+<% include partials/site_head %>
+
+<body>    
+    <div class="wrapper sub-wrap">
+        <!-- Header -->
+        <!-- //Header -->
+        <header class="header">
+            <% include partials/header %>
+        </header>
+        <!-- Container -->
+        <main role="main" class="container">
+            
+            <div id="content" class="content">
+                <!-- content-body -->
+                <div class="content-body">
+                   <!-- 검색목록 -->
+					<div class="board-list">
+                        <div class="tit-area">
+                            <h3 class="h-tit">교육 결과</h3>
+                            <div class="btn-area">
+                            	<a href="/page/result" class="btn btn-submit type-list"><span>목록</span></a>
+                            </div>
+                        </div>
+                        <div class="site-info-area">
+                        	<ul>
+                        		<li>Site : <%=site%></li>
+                        		<li>PC-ID : <%=pc%></li>
+                        		<li>공정 : <%=proc%></li>
+                        	</ul>
+                        </div>
+						<div class="headnote style1">
+                            <div>
+                                <p>Training Result</p>
+                            </div>
+                            <div class="btn-area">
+								
+                                <input type="hidden" id="schDataVal" value="<%=schDataVal%>">
+								<input type="hidden" id="schSteCdIdxNo" value="<%=schSteCdIdxNo%>">
+								<input type="hidden" id="schProcCdIdxNo" value="<%=schProcCdIdxNo%>">
+								<input type="hidden" id="schPcIdxNo" value="<%=schPcIdxNo%>">
+								<input type="hidden" id="schType" value="<%=schType%>">
+								<input type="hidden" id="schStDt" value="<%=schStDt%>">
+								<input type="hidden" id="schEndDt" value="<%=schEndDt%>">
+								
+               					<button type="button" class="btn btn-submit type-excel" id="excelDown"><span>Excel 다운로드</span></button>
+                            </div>
+						</div>
+						<div class="tbl-area">
+							<div class="tbl tbl-list">
+								<div class="tbl-head-fixed">
+									<table>
+										<colgroup>
+											<col style="width:8%" />
+											<col style="width:auto" />
+											<col style="width:15%" />											
+											<col style="width:15%" />
+											<col style="width:15%" />
+											<col style="width:11%" />
+											<col style="width:9%" />
+											<col style="width:6%" />											
+										</colgroup>
+										<thead>
+											<tr>
+												<th scope="col">ID</th>
+												<th scope="col">Mission</th>
+												<th scope="col">Machine</th>												
+												<th scope="col">Start Time</th>
+												<th scope="col">End Time</th>
+												<th scope="col">Play Time</th>												
+												<th scope="col">Result</th>
+												<th scope="col">Score</th>												
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div class="tbl-body-scroll">
+									<table>
+										<colgroup>
+											<col style="width:8%" />
+											<col style="width:auto" />
+											<col style="width:15%" />
+											<col style="width:15%" />
+											<col style="width:15%" />
+											<col style="width:11%" />	
+											<col style="width:9%" />
+											<col style="width:6%" />
+										</colgroup>
+										<tbody id="data-list">
+												
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<% include partials/pagenation.ejs %>
+						</div>
+					</div>
+					<!-- //검색목록 -->
+                    
+                </div>
+                <!-- //content-body -->
+            </div>
+        </main>
+        <!-- //Container -->
+    </div>
+</body>
+
+<% include partials/site_footer %>
+
+<script type="module" src="/js/views/resultDtl.js"></script>
+<script>
+    $(document).ready(function(){
+		$(".gnb-area .node-list .node-item").removeClass("is-current");
+        $(".gnb > ul > li").text(function(index,text){            
+            if(text === '교육 결과'){
+                $(this).addClass('is-current');
+            }
+            
+        })
+
+	})
+</script>
+
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<% include partials/site_head %>
+
+<body>	
+	<div class="wrapper sub-wrap">
+		<!-- Header -->
+		<header class="header">
+			<% include partials/header %>
+		</header>
+		<!-- //Header -->
+
+		<!-- Container -->
+		<main role="main" class="container">
+			<div id="content" class="content page-dashboard">
+                <input type="hidden"  id="typeChk" value="<%=user.type%>">
+				<!-- content-body -->
+                <div class="content-body">                    
+                    <!-- 검색목록 -->
+                    <div class="board-list">
+                        
+                        <!-- 시뮬레이터 버전 정보 / 적용 현황 -->
+                        <div class="tit-area">
+                            <h2 class="h-tit">시뮬레이터 적용 현황</h2>
+                            <span class="info">버전정보 (설치PC수)</span>
+                        </div>
+                        <div class="tbl-area tbl-01">
+                            <div class="tbl tbl-list centered">
+                                <div class="tbl-head-fixed">
+                                    <table>
+                                        <colgroup>
+                                            <col style="width:auto" />
+                                            <col style="width:12%" />              
+                                            <col style="width:12%" />   
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />                                            
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">시뮬레이터</th>
+                                                <th scope="col">최신 버전</th>    
+                                                <th scope="col">OC</th>                                            
+                                                <th scope="col">ESWA</th>
+                                                <th scope="col">ESNA</th>
+                                                <th scope="col">ESNB</th>
+                                                <th scope="col">ESMI</th>                                                
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="tbl-body-scroll">
+                                    <table>
+                                        <colgroup>
+                                            <col style="width:auto" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />                                           
+                                        </colgroup>
+                                        <tbody id="data-list">
+                                                
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- //시뮬레이터 버전 정보 / 적용 현황 -->
+
+                        <!-- 중계 사이트 버전 정보 / 적용 현황 -->
+                        <div class="tit-area">
+                            <h2 class="h-tit">법인별 시뮬레이터 적용 현황</h2>
+                            <div class="form-set">
+                                <label for="schSite">사이트</label>
+                                <select name="" id="schSite" class="select style1 w-xl">  
+                                    <option value="">== 선택하세요 ==</option>                                    
+                                </select>
+                            </div>
+                        </div>
+                    <div id="displayView" style="visibility:hidden">
+                        
+                        <div class="tit-area1">
+                            <h3 class="h-tit-md has-tag" id="siteCdView">ESNB</h3>
+                        </div>
+                        <div class="btn-area btn-state-area">
+                            <button type="button" class="btn-state btn-scroll" onclick="ui.scrollMoveTo('scroll1');"><span>중계서버 현황</span></button>
+                            <button type="button" class="btn-state btn-scroll" onclick="ui.scrollMoveTo('scroll2');"><span>시뮬레이터 PC 현황 : <span id="pcCnt"></span>대</span></button>
+                        </div>
+
+                        <div class="sec-area">
+                            <div class="tit-area2 scroll1">
+                                <h4 class="h-tit-sm">중계 사이트 버전 정보 / 적용 현황</h4>
+                            </div>
+                            <div class="tbl-area">
+                                <div class="tbl tbl-list">
+                                    <div class="tbl-head-fixed">
+                                        <table>                                           
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">항목</th>
+                                                    <th scope="col">버전정보</th>
+                                                    <th scope="col">수신일시</th>                                                   
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="tbl-body-scroll">
+                                        <table>                                           
+                                            <tbody id="siteVerList">
+                                                    
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- //중계 사이트 버전 정보 / 적용 현황 -->
+                        
+                        <!-- ESNB 시뮬레이터 PC 상세 -->
+                        <div class="sec-area">
+                            <div class="tit-area2 scroll2">
+                                <h4 class="h-tit-sm"><span id="siteCdView1"></span> 시뮬레이터 PC 상세</h4>
+                            </div>
+                            <!-- 아코디언 기본옵션 변경
+                                싱크로이드: data-sync="false" 
+                                기본활성화 : acco-item is-active / acco-cont style="display:block"
+                            -->
+                            <ul class="acco acco-pcinfo" data-sync="false" data-toggle="true" id="pcInfoList">
+                                
+                               
+                            </ul>
+                        </div>
+                        <!-- //ESNB 시뮬레이터 PC 상세 -->
+                    </div>
+                    </div>
+                    <!-- //검색목록 -->
+                </div>
+                <!-- //content-body -->
+                <!-- go-top -->
+                <div class="go-top">
+                    <button type="button" class="btn-top"><span>제일 위로 이동</span></button>
+                </div>
+                <!-- //go-top -->            
+			</div>
+		</main>
+		<!-- //Container -->
+
+		
+		<% include partials/site_footer %>
+	</div>
+    <!-- Popup Wrap -->
+    <div id="popupProgramPC" class="popup-wrap type-basic">
+        <section class="popup w-xl">
+            <div class="popup-head">
+                <h3 class="h-tit"><span id="viewProcCd"></span> PC 버전 현황</h3>
+            </div>
+            <div class="popup-body">
+                <div class="popup-content">
+                    <div class="tbl-title">
+                        <span class="title">중계 서버 버전</span>
+                        <span class="version" id="viewVersion"></span>
+                    </div>
+                    <div class="tbl-area">
+                        <div class="tbl tbl-view2">
+                            <table>
+                                <colgroup id="table_group">
+                                    <col style="width:15%" />
+                                    <!-- <col style="width:16.66%" />
+                                    <col style="width:16.66%" />
+                                    <col style="width:16.66%" />
+                                    <col style="width:16.66%" />
+                                    <col style="width:auto" /> -->
+                                </colgroup>
+                                <thead>
+                                    <tr id="thead_tr">
+                                        <th scope="col">PL/공정</th>
+                                        <!-- <th scope="col">PC1<br>(192.168.1.1)</th>
+                                        <th scope="col">PC2<br>(192.168.1.2)</th>
+                                        <th scope="col">PC3<br>(192.168.1.3)</th>
+                                        <th scope="col">PC4<br>(192.168.1.4)</th>
+                                        <th scope="col">PC5<br>(192.168.1.5)</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="tbody_tr">
+                                        <th scope="row" id="viewProcCd1"></th>
+                                        <!-- <td class="txt-point">1.1.1.1</td>
+                                        <td>1.1.1.2</td>
+                                        <td>-</td>
+                                        <td>1.1.1.2</td>
+                                        <td>-</td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-foot">
+                <button type="button" class="btn btn-pop" onclick="closePopupProgramPC();"><span>닫기</span></button>
+            </div>
+            <div class="popup-close">
+                <button type="button" class="btn btn-close" onclick="closePopupProgramPC();"><span>닫기</span></button>
+            </div>
+        </section>
+        <div class="dimmer"></div>
+    </div>
+    <!-- //Popup Wrap -->
+</body>
+
+<script type="module" src="/js/views/dashboard.js"></script>
+<script>
+	
+    function closePopupProgramPC(){
+        
+        $("#table_group").html('<col style="width:14%" />');
+        $("#thead_tr").html('<th scope="col">PL/공정</th>');
+        $("#tbody_tr").html('<th scope="row" id="viewProcCd1"></th>');
+
+        $("#popupProgramPC #viewProcCd").html('');
+        $("#popupProgramPC #viewProcCd1").html('');
+
+        $("#popupProgramPC #viewVersion").html('');
+
+        ui.popup.close('popupProgramPC')
+    }
+
+    $(document).ready(function(){
+		$(".gnb-area .node-list .node-item").removeClass("is-current");
+        $(".gnb > ul > li").text(function(index,text){            
+            if(text === 'DASHBOARD'){
+                $(this).addClass('is-current');
+            }
+            
+        })
+
+	})
+
+</script>
+</html>

@@ -1,0 +1,99 @@
+<!-- 검색목록 -->
+<div class="board-list">
+    <div class="tit-area border-gray">
+        <h3 class="h-tit">사용자 권한 관리</h3>
+    </div>
+    <div class="board-srch">
+        <div class="form-area">
+            <div class="form-controls">
+                <label for="srchAuth" class="form-tit">사용자권한</label>
+                <select name="" id="srchAuth" class="select style1 w-lg">
+                    <option value="">전체</option>
+                </select>
+            </div>
+            <div class="form-controls">
+                <label for="srchId" class="form-tit">ID</label>
+                <input type="text" id="srchId" value="" class="input style1">
+            </div>
+            <div class="form-controls">
+                <label for="srchName" class="form-tit">이름</label>
+                <input type="text" id="srchEmpNm" value="" class="input style1">
+            </div>
+        </div>
+        <div class="btn-area">
+            <button type="button" class="btn btn-submit type-reg" onclick="ui.popup.open('popupUserAuthority')"><span>등록</span></button>
+            <button type="button" class="btn btn-submit type-srch" id="btnSearch"><span>조회</span></button>
+        </div>
+    </div>
+    <div class="tbl-area">
+        <div class="tbl tbl-list">
+            <div class="tbl-head-fixed">
+                <table>
+                    <colgroup>
+                        <col style="width:auto" />
+                        <col style="width:25%" />
+                        <col style="width:25%" />
+                        <col style="width:25%" />
+                    </colgroup>	
+                    <thead>
+                        <tr>
+                            <th scope="col">사용자권한</th>
+                            <th scope="col">Gportal ID</th>
+                            <th scope="col">이름</th>
+                            <th scope="col">조직</th>
+                    </thead>
+                </table>
+            </div>
+            <div class="tbl-body-scroll">
+                <table>
+                    <colgroup>
+                        <col style="width:auto" />
+                        <col style="width:25%" />
+                        <col style="width:25%" />
+                        <col style="width:25%" />
+                    </colgroup>	
+                    <tbody id="data-list">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <% include ../partials/pagenation.ejs %>
+    </div>
+</div>
+<!-- //검색목록 -->
+<script type="module" src="/js/views/userMgmt.js"></script>
+
+<script>
+    function userAuth_pop_reset(){
+    
+        $("#popId").val('');
+
+        $("#popIdxNo").val('');
+        $("#popEmpNo").val('');
+        $("#popEmpNm").val('');
+        $("#popOrgNm").val('');
+
+        $("#popId").prop("readonly", false);
+        $("#popEmpNm").prop("readonly", false);
+        $("#popOrgNm").prop("readonly", false);
+        $("#popSearchId").prop("disabled", false);
+   
+    }
+
+    function userAuth_view_pop(idx_no, auth_cd_idx_no, user_id, emp_nm, org_nm, emp_no){
+        $("#popAuth").val(auth_cd_idx_no);
+        $("#popId").val(user_id);
+        $("#popIdxNo").val(idx_no);
+        $("#popEmpNo").val(emp_no);
+        $("#popEmpNm").val(emp_nm);
+        $("#popOrgNm").val(org_nm);
+
+        $("#popId").prop("readonly", true);
+        $("#popEmpNm").prop("readonly", true);
+        $("#popOrgNm").prop("readonly", true);
+        $("#popSearchId").prop("disabled", true);
+        ui.popup.open('popupUserAuthority')
+        
+    }
+</script>

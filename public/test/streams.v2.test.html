@@ -1,0 +1,444 @@
+<!doctype html>
+<html>
+<head>
+    <title>-</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript">
+        const config = {
+            assistant1 : {uid : "admin@lgcns.com", type:"AA"},
+            assistant2 : {uid : "pmkang@lgcns.com", type:"AA"},
+            worker1 : {uid:"4D9C61639094DF2E", type:"WH"},//마곡HMT1
+            worker2 : {uid:"9870AB426E34E562", type:"WM"},// 오창_스마트폰
+            worker3 : {uid:"E6F106AE53425BF8", type:"WP"} // pmkang
+        }
+    </script>
+    <style>
+      table {
+        width: 100%;
+        border: 1px solid #444444;
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid #444444;
+        padding: 10px;
+      }
+      th {
+        background-color: #eee;
+      }
+      tbody tr:hover{
+        background-color: #fee;
+        cursor:pointer;
+      }
+      .local_stream {
+        background-color: #efe;
+      }
+    </style>
+</head>
+<body>
+    <div>
+        <fieldset>
+            <legend>Current Clent: </legend>
+            <label for="assistant1">Assistant1</label>
+            <input type="radio" name="user" id="assistant1" class="select_client">
+            <label for="assistant2">Assistant2</label>
+            <input type="radio" name="user" id="assistant2" class="select_client">
+            <label for="worker1">Worker 1</label>
+            <input type="radio" name="user" id="worker1" class="select_client">
+            <label for="worker2">Worker 2</label>
+            <input type="radio" name="user" id="worker2" class="select_client">
+            <label for="worker3">Worker 3</label>
+            <input type="radio" name="user" id="worker3" class="select_client">
+            &nbsp;&nbsp;email/device_id
+            <input type="text" id="uid" size="40" class="ui-corner-all"/>
+            <input type="hidden" id="utype" size="40" class="ui-corner-all"/>
+            &nbsp;&nbsp;socket id
+            <input type="text" id="sid" size="40" class="ui-corner-all"/>
+        </fieldset>
+    </div>
+    <div style="margin-top:15px">
+        <fieldset>
+            <legend>Custom messages</legend>
+            <label for="msg_key">Key : </label>
+            <input type="text" name="msg_key" id="custom_msg_key" size="40" class="ui-corner-all"/>
+            <label for="msg_data">Data : </label>
+            <input type="text" name="msg_data" id="custom_msg_data" size="80" class="ui-corner-all"/>
+            <span><input type="button" id="btn_custom_msg" value="Send"/></span>
+        </fieldset>
+    </div>
+    <div style="margin-top:15px">
+        <fieldset>
+            <legend>Translation messages</legend>
+            <label for="trans_msg_data">msg : </label>
+            <input type="text" name="trans_msg_data" id="trans_msg_data" size="80" class="ui-corner-all"/>
+            <span><input type="button" id="btn_trans_msg" value="Send"/></span>
+        </fieldset>
+    </div>
+    <div style="margin-top:15px">
+        <button id="ready_to_stream">ready_to_stream</button>
+        &nbsp;|&nbsp;
+        <button id="btn_call">call</button>
+        <button id="btn_cancel">cancel</button>
+        &nbsp;|&nbsp;
+        <button id="btn_accept">accept</button>
+        <button id="btn_reject">reject</button>
+        &nbsp;|&nbsp;
+        <button id="btn_hangup">hang_up</button>
+        <button id="btn_kickout">kick_out</button>
+        &nbsp;|&nbsp;
+        <button id="btn_trans_start">trans_start</button>
+        <button id="btn_trans_stop">trans_stop</button>
+        <button id="btn_trans_speaker">trans_speaker</button>
+        <button id="btn_trans_req_speak">trans_req_speak</button>
+    </div>
+    <div style="margin-top:10px">
+        <button id="refresh_streams">Refresh Streams &amp; Calls </button>
+        <button id="clear_log">Clear Log</button>
+    </div>
+    <div>
+        <div style="display:inline-block;width:48%">
+            <h2>Streams</h2>
+            <table id="streams">
+                <thead><tr>
+                    <th>v</th><th>name</th><th>type</th><th>state</th><th>sid</th>
+                </tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div style="display:inline-block;width:48%">
+            <h2>Calls</h2>
+            <table id="calls">
+                <thead><tr>
+                    <th>host</th><th>member</th><th>time</th>
+                </tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="logs" style="width:100%;height:600px;overflow: scroll;border:1px solid gray;margin-top:15px;">
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "fieldset" ).controlgroup();
+            $( ".select_client" )
+                .checkboxradio()
+                .click((e)=>{
+                    var user = e.target.id;
+                    $("#uid").val(config[user].uid);
+                    $("#utype").val(config[user].type);
+                });
+            
+            $("button").button();
+            $("#clear_log").click((e)=>{
+                $("#logs").empty();
+            });
+        } );
+
+        $(document).ready(()=>{
+            const socket = io();
+            var localId = null;
+            var localInfo = null;
+            var streams = {};
+            var callGroup = {};
+
+            // socket.io 연결됨
+            socket.on("connect",()=>{
+                $("#logs").append(`&gt;&gt;<span style="color:#0A0">[connection] socket.io connected</span><br/>`);
+            });
+
+            // socket.io 연결끊김
+            socket.on("disconnect",(data)=>{
+                $("#logs").append(`&gt;&gt;<span style="color:#F66">[disconnect] ${JSON.stringify(data)}</span><br/>`);
+            });
+
+            // 연결성공시 peer식별을 위한 socket id 전달받음
+            socket.on('id', (data) => {
+                localId = data.id;
+                $("#sid").val(data.id);
+                $("#logs").append(`&gt;&gt;[id] socket id : ${data.id}<br/>`);
+            });
+
+            // 새로운 READY 상태인 peer가 추가됫다는 이벤트 메세지 수신
+            socket.on("ready_to_stream", (data) => {
+                $("#logs").append(`&gt;&gt;[ready_to_stream] ${JSON.stringify(data)}<br/>`);
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            // 다른 peer로부터 통화연결요청 옴 (Assistant의 경우 모든 Worker로부터 받음)
+            socket.on("call", (data) => {
+                $("#logs").append(`&gt;&gt;<span style="color:#66F">[call] ${JSON.stringify(data)}</span><br/>`);
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            // 다른 peer로부터 통화요청상태가 취소되었음을 수신
+            socket.on("cancel", (data) => {
+                $("#logs").append(`&gt;&gt;<span style="color:#66F">[cancel] ${JSON.stringify(data)}</span><br/>`);
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            // call 통화요청에 대한 응답메세지 수신
+            socket.on("reply", (data) => {
+                $("#logs").append(`&gt;&gt;[reply] ${JSON.stringify(data)}<br/>`);
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            // 통화중인 상대방 중에서 누군가 통화종료했음을 알리는 이벤트 수신 
+            socket.on("leave", (data) => {
+                $("#logs").append(`&gt;&gt;[leave] ${JSON.stringify(data)}<br/>`);
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            // 통화중인 상태에서 새로운 통화상대가 추가되었음을 알림
+            socket.on("join", (data) => {
+                $("#logs").append(`&gt;&gt;[join] ${JSON.stringify(data)}<br/>`);
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            // 통화종료 요청 받음 (worker가 이 메세지 받으면 통화종료하고 READY로 전환해야 함)
+            socket.on("hangup", (data) => {
+                $("#logs").append(`&gt;&gt;<span style="color:#66F">[hangup] ${JSON.stringify(data)}</span><br/>`);
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+            
+            // WebRTC 연결 요청
+            socket.on("message", (data) => {
+                $("#logs").append(`&gt;&gt;<span style="color:#66F">[message] ${JSON.stringify(data)}</span><br/>`);
+            });
+            
+            socket.on("connected_users", (data) => {
+                $("#logs").append(`&gt;&gt;<span style="color:#F66">[connected_users] ${JSON.stringify(data)}</span><br/>`);
+            })
+            
+            socket.on("trans_start", (data) => {
+                $("#logs").append(`&gt;&gt;<span style="color:#66F">[trans_start] ${JSON.stringify(data)}</span><br/>`);
+            });
+
+            socket.on("trans_stop", (data) => {
+                $("#logs").append(`&gt;&gt;<span style="color:#66F">[trans_stop] ${JSON.stringify(data)}</span><br/>`);
+            });
+
+            socket.on("trans_msg", (data) => {
+                $("#logs").append(`&gt;&gt;<span style="color:#66F">[trans_msg] ${JSON.stringify(data)}</span><br/>`);
+            });
+
+            socket.on("trans_speaker", (data) => {
+                $("#logs").append(`&gt;&gt;<span style="color:#66F">[trans_speaker] ${JSON.stringify(data)}</span><br/>`);
+            });
+
+            socket.on("trans_req_speak", (data) => {
+                $("#logs").append(`&gt;&gt;<span style="color:#66F">[trans_req_speak] ${JSON.stringify(data)}</span><br/>`);
+            });
+
+            // 전체 스트림 정보 및 통화정보 수신
+            socket.on("debug_streams_info", (data) => {
+                console.log(data);
+                streams = data.streams;
+                var streamNum = 0;
+                var streamsContainer = $("#streams tbody");
+                streamsContainer.empty();
+                for(var i in data.streams){
+                    var s = data.streams[i];
+                    streamsContainer.append(`<tr onclick="selectClient(event)" class="${s.sid==localId?"local_stream":""}"><td><input type="radio" name="client" value="${s.sid}"></td><td>${s.name}</td><td>${s.type}</td><td>${s.state}</td><td>${s.sid}</td></tr>`);
+                    streamNum ++;
+                    if(s.sid == localId) localInfo = s;
+                }
+
+                callGroup = data.callGroup;
+                var callNum = 0;
+                var callContainer = $("#calls tbody");
+                callContainer.empty();
+                for(var i in data.callGroup){
+                    var g = data.callGroup[i];
+                    var line = `<tr><td>${streams[g.host].name}</td><td>`;
+                    for(var m in g.member) {
+                        line += `&lt;${streams[m].name}&gt;`;
+                    }
+                    line += `</td><td>${new Date(g.calltime).toLocaleString()}</td></tr>`;
+                    callContainer.append(line);
+                    callNum ++;
+                }
+
+                $("#logs").append(`&gt;&gt;[debug_streams_info] streams : ${streamNum}, calls : ${callNum}<br/>`);
+                if(localInfo) $("title").html(`(${localInfo.type}) ${localInfo.name}`);
+            });
+
+            //-[ready_to_stream]-----------------------------------------------------------------------
+            $("#ready_to_stream").click(()=>{
+                var utype = $("#utype").val();
+                var data = {
+                    sid : $("#sid").val(),
+                    type : utype
+                };
+                if(utype.startsWith("A")){
+                    data.email = $("#uid").val();
+                } else {
+                    data.deviceid = $("#uid").val();
+                }
+                $("#logs").append(`&lt;&lt;[ready_to_stream] ${JSON.stringify(data)}<br/>`);
+                socket.emit("ready_to_stream", data);
+
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            //-[call]-----------------------------------------------------------------------
+            $("#btn_call").click(()=>{
+                var data = {
+                    from : localId,
+                    to : $("#streams input:checked").val()
+                };
+
+                $("#logs").append(`&lt;&lt;[call] ${JSON.stringify(data)}<br/>`);
+                socket.emit("call", data);
+
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            //-[cancel]-----------------------------------------------------------------------
+            $("#btn_cancel").click(()=>{
+                var data = {
+                    from : localId,
+                    to : $("#streams input:checked").val()
+                };
+
+                $("#logs").append(`&lt;&lt;[call] ${JSON.stringify(data)}<br/>`);
+                socket.emit("cancel", data);
+
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            //-[accept]-----------------------------------------------------------------------
+            $("#btn_accept").click(()=>{
+                var data = {
+                    type : "call",
+                    result: "success",
+                    from : $("#streams input:checked").val(),
+                    to : localId
+                };
+
+                $("#logs").append(`&lt;&lt;[accept] ${JSON.stringify(data)}<br/>`);
+                socket.emit("reply", data);
+
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            //-[reject]-----------------------------------------------------------------------
+            $("#btn_reject").click(()=>{
+                var data = {
+                    type : "call",
+                    result: "reject",
+                    reason: "callee reject",
+                    from : $("#streams input:checked").val(),
+                    to : localId
+                };
+
+                $("#logs").append(`&lt;&lt;[reject] ${JSON.stringify(data)}<br/>`);
+                socket.emit("reply", data);
+
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            //-[hangup]-----------------------------------------------------------------------
+            $("#btn_hangup").click(()=>{
+                var data = { from : localId };
+
+                $("#logs").append(`&lt;&lt;[hangup] ${JSON.stringify(data)}<br/>`);
+                socket.emit("hangup", data);
+
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+
+            //-[kickout]-----------------------------------------------------------------------
+            $("#btn_kickout").click(()=>{
+                var data = { 
+                    from : localId,
+                    to : $("#streams input:checked").val()
+                };
+
+                $("#logs").append(`&lt;&lt;[kickout] ${JSON.stringify(data)}<br/>`);
+                socket.emit("kickout", data);
+
+                setTimeout(function(){$("#refresh_streams").click();},100);
+            });
+            
+
+            //-[refresh_streams]-----------------------------------------------------------------------
+            $("#refresh_streams").click(()=>{
+                $("#logs").append(`&lt;&lt;[debug_streams_info] request streams info<br/>`);
+                socket.emit("debug_streams_info", null);
+            });
+
+            $("#assistant1").click();
+            $("#refresh_streams").click();
+
+            //-[trans_start]-----------------------------------------------------------------------
+            $("#btn_trans_start").click(()=>{
+                var data = { from : localId };
+
+                $("#logs").append(`&lt;&lt;[trans_start] ${JSON.stringify(data)}<br/>`);
+                socket.emit("trans_start", data);
+            });
+
+            //-[trans_stop]-----------------------------------------------------------------------
+            $("#btn_trans_stop").click(()=>{
+                var data = { from : localId };
+
+                $("#logs").append(`&lt;&lt;[trans_stop] ${JSON.stringify(data)}<br/>`);
+                socket.emit("trans_stop", data);
+            });
+
+            //-[trans_speaker]-----------------------------------------------------------------------
+            $("#btn_trans_speaker").click(()=>{
+                var data = {
+                    from : localId,
+                    speaker : $("#streams input:checked").val()
+                };
+
+                $("#logs").append(`&lt;&lt;[trans_speaker] ${JSON.stringify(data)}<br/>`);
+                socket.emit("trans_speaker", data);
+            });
+
+            //-[trans_req_speak]-----------------------------------------------------------------------
+            $("#btn_trans_req_speak").click(()=>{
+                var data = {
+                };
+
+                $("#logs").append(`&lt;&lt;[trans_req_speak] ${JSON.stringify(data)}<br/>`);
+                socket.emit("trans_req_speak", data);
+            });
+
+            //-[trans_msg]-----------------------------------------------------------------------
+            $("#btn_trans_msg").click((e)=>{
+
+                var data = {
+                    from: localId,
+                    msg: $("#trans_msg_data").val()
+                }
+                $("#logs").append(`&lt;&lt;[trans_msg] ${JSON.stringify(data)}<br/>`);                
+                socket.emit("trans_msg", data);
+            });
+
+            //-[custom_msg]-----------------------------------------------------------------------
+            $("#btn_custom_msg").click((e)=>{
+                var key = $("#custom_msg_key").val();
+                var data = $("#custom_msg_data").val();
+                if(!key || !(key.trim())) {
+                    alert("Cannot sent empty message");
+                    return;
+                } else {
+                    var obj = null;
+                    try{ obj = JSON.parse(data); } catch(e) { obj = null; }
+                    socket.emit(key, obj?obj:data);
+                }
+            });
+        });
+
+        function selectClient(e){
+            $(e.target).parent().find("input[name='client']").prop('checked', true);
+        }  
+    </script>
+</body>
+</html>

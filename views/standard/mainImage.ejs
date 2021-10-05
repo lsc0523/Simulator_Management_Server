@@ -1,0 +1,105 @@
+<div class="board-write2">
+    <div class="tit-area">
+        <h2 class="h-tit">이미지 등록</h2>
+    </div>
+    <div class="tbl-area">
+        <div class="tbl tbl-form2">
+            <table>
+                <colgroup>
+                    <col style="width:160px;" />
+                    <col />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th scope="row">분류</th>
+                        <td>
+                            <div class="img-box" id="imagePreview">
+                                <img id="img" src="/api/download/mainImg" alt="메인이미지">
+                            </div>
+                        </td>											
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="sFormTit">첨부파일 <br>등록</label></th>
+                        <td>
+                            <div class="file-attach-area">
+                                <div class="img-info">
+                                    <p>사진의 크기 비율은 800×300 권장. (비율이 다르면 사진이 찌그러질 수 있습니다.)</p>
+                                    <p>업로드는 JPG파일만 가능. (파일크기는 500KB 미만 권장)</p>
+                                    <p>교체 시, 기존 사진은 복구 불가함</p>
+                                </div>
+                                <div class="file-attach">
+                                    <input type="file" name="" id="sFileImg" onchange="ui.fileAttachSrc(this)">
+                                    <label for="sFileImg" class="btn btn-attach2"><span>찾아보기</span></label>
+                                    <input type="text" name="" id="imgText" class="input style1">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="submit-area">
+        <button type="button" class="btn primary" id="btn-upload-img"><span>확인</span></button>
+        <button type="button" class="btn" id="cancel"><span>취소</span></button>
+    </div>
+</div>
+<script type="module">
+    import uploadService from '/js/services/rest/uploadService.mjs'
+    (function () {
+        $("#content").removeClass('board-content');
+        $("#content").addClass('board-content2');
+
+        const uploadBtn = document.getElementById("btn-upload-img");
+        const imgInput = document.getElementById("sFileImg");
+        const imgWrp = document.getElementById("img");
+
+        imgInput.addEventListener("change", (e) => {
+            let get_file = e.target.files;
+  
+            let reader = new FileReader();
+            reader.onload = (function (Img) {
+                return function(e) {
+                Img.src = e.target.result;
+                }
+            })(imgWrp);
+            
+            if(get_file){
+                reader.readAsDataURL(get_file[0]);
+            }
+
+        })
+
+        uploadBtn.addEventListener("click", (e) => {
+            if($("#imgText").val().split('.')[1] != 'jpg' && $("#imgText").val().split('.')[1] != 'jpeg' && $("#imgText").val().split('.')[1] != 'png'){
+                $(".type-alert .popup-content").text("이미지 파일만 업로드 가능합니다.");
+                ui.popup.open('popupAlert');
+                return
+            }
+            if (imgInput.value) {
+                FunLoadingBarStart();      
+                
+                uploadService.uploadMainImg(imgInput.files[0])
+                    .then(() => {
+                        imgWrp.setAttribute("src", "/api/download/mainImg");
+                        FunLoadingBarEnd();		
+                        $(".type-alert .popup-content").text("이미지 업로드 성공");
+                        ui.popup.open('popupAlert');
+                        setTimeout("location.reload();", 1000);
+                    })
+                    .catch((err) => {
+                        console.error(err)
+                        $(".type-alert .popup-content").text("업로드 실패");
+                        ui.popup.open('popupAlert');
+                    })
+            }else{
+                $(".type-alert .popup-content").text("이미지를 첨부해 주세요.");
+                ui.popup.open('popupAlert');
+            }
+        })
+        document.getElementById("cancel").addEventListener("click", (e) => {
+            location.reload();
+        })
+    })();
+
+</script>

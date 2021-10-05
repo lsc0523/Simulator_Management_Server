@@ -1,0 +1,90 @@
+<!-- 검색목록 -->
+<div class="board-list">
+    <div class="tit-area border-gray">
+        <h3 class="h-tit">시뮬레이터 PC List</h3>
+    </div>
+    <div class="board-srch">
+        <div class="form-item">
+            <span class="label">사이트</span>
+            <!-- <span class="site-name">ESBN</span> -->
+            <select name="" id="schSite" class="select style1 w-lg"> 
+                <option value="">전체</option>              
+            </select>
+        </div>
+        <div class="btn-area">
+            <button type="button" class="btn btn-submit type-reg" onclick="ui.popup.open('popupSimulPCReg')"><span>등록</span></button>
+            <button type="button" class="btn btn-submit type-srch" id="btnSearch"><span>조회</span></button>
+        </div>
+    </div>
+    <div class="tbl-area">
+        <div class="tbl tbl-list">
+            <div class="tbl-head-fixed">
+                <table>
+                    <colgroup>
+                        <col style="width:70px" />
+                        <col style="width:15%" />                        
+                        <col style="width:15%" />                        
+                        <col style="width:15%" />
+                        <col style="width:15%" />
+                        <col style="width:auto" />                        
+                        <col style="width:100px" />
+                    </colgroup>	
+                    <thead>
+                        <tr>
+                            <th scope="col">번호</th>                            
+                            <th scope="col">사이트</th>
+                            <th scope="col">PC 이름</th>
+                            <th scope="col">IP</th>
+                            <th scope="col">등록자</th>
+                            <th scope="col">수정자</th>
+                            <th scope="col">설치위치</th>                            
+                            <th scope="col">선택</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="tbl-body-scroll">
+                <table>
+                    <colgroup>
+                        <col style="width:70px" />
+                        <col style="width:15%" />                        
+                        <col style="width:15%" />                        
+                        <col style="width:15%" />
+                        <col style="width:15%" />
+                        <col style="width:auto" />                        
+                        <col style="width:100px" />
+                    </colgroup>	
+                    <tbody id="data-list">
+                        
+                    </tbody>
+                </table>
+            </div> 
+        </div>
+        <% include ../partials/pagenation.ejs %>
+    </div>
+</div>
+<!-- //검색목록 -->
+<script type="module" src="/js/views/pcMgmt.js"></script>
+<script>
+    function pcview_pop(idx_no, site_idx_no, pc_nm, pc_ip, loc_desc){
+        $("#popSimulIdxNo").val(idx_no);
+        $("#popSite").val(site_idx_no);
+        $("#popPcNm").val(pc_nm);
+        $("#popPcIp").val(pc_ip);
+       // $("#sPopRegnt").val(reg_name);
+        $("#popLocDesc").val(loc_desc);
+
+        $("#popPcIp").prop("readonly", true);
+        ui.popup.open('popupSimulPCReg')
+        
+    }
+
+    function pop_pc_reset(){        
+        
+        $("#popupSimulPCReg #popSimulIdxNo").val('');
+        $("#popupSimulPCReg #popPcNm").val('');
+        $("#popupSimulPCReg #popPcIp").val('');
+        $("#popupSimulPCReg #popLocDesc").val('') ;
+        $("#popPcIp").prop("readonly", false);
+    }
+</script>

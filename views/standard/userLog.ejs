@@ -1,0 +1,58 @@
+<!-- 검색목록 -->
+<div class="board-list">
+    <div class="tit-area border-gray">
+        <h3 class="h-tit">사용자 로그</h3>
+    </div>
+    <div class="board-srch">
+        <div class="form-area">
+            <div class="form-controls">
+                <label for="sFormDate" class="form-tit">기간</label>
+                <span class="input-extend type-date">
+                    <input type="text" name="" id="schStDt" class="input style1">
+                </span>
+                <span class="form-split">~</span>
+                <span class="input-extend type-date">
+                    <input type="text" name="" id="schEndDt" class="input style1">
+                </span>
+            </div>
+        </div>
+        <div class="btn-area">
+            <button type="button" class="btn btn-submit type-srch" id="btnSearch"><span>조회</span></button>
+        </div>
+    </div>
+    <div class="tbl-area">
+        <div class="tbl tbl-list">
+            <div class="tbl-head-fixed">
+                <table>
+                    <colgroup>
+                        <col style="width:auto" />
+                        <col style="width:25%" />
+                        <col style="width:50%" />
+                    </colgroup>	
+                    <thead>
+                        <tr>
+                            <th scope="col">일시</th>
+                            <th scope="col">사용자</th>
+                            <th scope="col">내용</th>
+                    </thead>
+                </table>
+            </div>
+            <div class="tbl-body-scroll">
+                <table>
+                    <colgroup>
+                        <col style="width:auto" />
+                        <col style="width:25%" />
+                        <col style="width:50%" />
+                    </colgroup>	
+                    <tbody id="data-list">
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+        <% include ../partials/pagenation.ejs %>
+    </div>
+</div>
+<!-- //검색목록 -->
+<script type="module" src="/js/views/userLog.js"></script>

@@ -1,0 +1,145 @@
+@keyframes blink {
+    0% {opacity: 0;}
+    50% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+* {
+    outline: none;
+}
+/*
+    [TODO] 나중에 content.css에서 찾아서 수정 적용
+*/
+.operation-camera video {width:100%; height:100%;}
+.operation-camera img {width:100%; height:100%; object-fit: contain;}
+.operation-camera canvas {
+    position: relative;
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+    /* width:100%;
+    height:100%; */
+    z-index: 1;
+}
+.btn-oparator.type-register {background-color:#ffa621;}
+.btn-oparator.type-accept {
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+.tab-subcate .tab-item .btn:disabled {
+    cursor: not-allowed;
+}
+
+.tab-subcate .tab-item .btn.is-selected {
+    background-color:#a50034;
+    color:#fff;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.input-tool.type-color {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    /* display: none; */
+}
+
+.operation-preview .btn-area .ico-handup.is-disabled {background-position:-30px -30px;}
+
+.visibility-hidden{
+    visibility: hidden !important;
+}
+
+.drawing-palette-wrp {
+    position: relative;
+    display: block;
+    height: 90px;
+    width: 400px;
+    background: rgba(253, 253, 253, 0.5);
+    padding: 20px;
+    bottom: 0;
+    z-index: 1;
+}
+
+.drawing-palette-wrp > div {
+    width: 40px;
+    display: inline-block;
+    height: 40px;
+    margin: 5px;
+    border-radius: 25%;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+/*
+    Chart
+*/
+.group1-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.group2-container{
+    /* margin: 0;
+    padding: 0; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+}
+
+.ring-chart
+{
+    padding: 10px; 
+    background-color: rgb(245, 245, 245);
+    border-style: solid;
+    border-width: thin;
+    border-color: gray;
+    height: 350px;   
+    width: 47%;
+}
+
+.bar-chart
+{
+    padding: 10px;    
+    background-color: rgb(245, 245, 245);
+    border-style: solid;
+    border-width: thin;
+    border-color: gray;
+    height: 350px;
+    width: 47%;
+}
+
+
+#back{
+    position: absolute;
+    z-index: 100;
+    background-color: #e4e4e4;
+    display:none;
+    left:0;
+    top:0;
+}
+#loadingBar{
+    position:absolute;
+    left:50%;
+    top: 40%;
+    display:none;
+    z-index:3000;
+}
+.login-content .login-sec .form-alert {height:22px; padding-top:10px; 
+    display: flex; justify-content: start; align-items: center;}
+.login-content .login-sec .form-alert p {display:flex; margin-bottom:-1px; 
+    padding-left: 3px;}
+.login-content .login-sec .form-alert span {width:16px; height:16px;
+    border-radius:50%; background:#c72b5c; color:white; 
+    display: flex; justify-content: center; align-items: center;}
+
+.login-app-name {
+    margin: 0.2rem 0;
+    color: #aaaaaa;
+}

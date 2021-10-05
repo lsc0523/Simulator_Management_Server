@@ -1,0 +1,19 @@
+<div class="pagenation-area">
+    <div class="pagenation">
+        <div class="btn-area">
+            <input type="hidden" id="page" value="1">
+            <input type="hidden" id="pageNum" value="">
+            <button type="button" class="btn btn-prev2" onclick="go_page(1);"><span>첫페이지</span></button>
+            <button type="button" class="btn btn-prev1" onclick="go_page(parseInt(document.getElementById('page').value)-1);"><span>이전페이지</span></button>
+        </div>
+               
+        <div class="num-area">
+        
+        </div>
+        <div class="btn-area">
+            <button type="button" class="btn btn-next1" onclick="go_page(parseInt(document.getElementById('page').value)+1);"><span>다음페이지</span></button>
+            <button type="button" class="btn btn-next2" onclick="go_page(document.getElementById('pageNum').value);"><span>마지막페이지</span></button>
+        </div>
+    </div>
+</div>
+

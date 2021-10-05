@@ -1,0 +1,81 @@
+<div class="board-write2">
+    <div class="tit-area">
+        <h2 class="h-tit">App Down 등록</h2>
+    </div>
+    <div class="tbl-area">
+        <div class="tbl tbl-form2">
+            <table>
+                <colgroup>
+                    <col style="width:160px;" />
+                    <col />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th scope="row">분류</th>
+                        <td>
+                            <div class="submit-area" id="imagePreview">
+                                <a href="/api/app/download"><button type="button" class="btn primary" ><span>App 다운로드</span></button></a>
+                            </div>
+                        </td>											
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="sFormTit">첨부파일<br>등록</label></th>
+                        <td>
+                            <div class="file-attach-area">
+                                <div class="img-info">
+                                    <p>파일을 업로드 해주세요.</p>
+                                </div>
+                                <div class="file-attach">
+                                    <input type="file" name="" id="sFileImg" onchange="ui.fileAttachSrc(this)">
+                                    <label for="sFileImg" class="btn btn-attach2"><span>찾아보기</span></label>
+                                    <input type="text" name="" class="input style1">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="submit-area">
+        <button type="button" class="btn primary" id="btn-upload-img"><span>확인</span></button>
+        <button type="button" class="btn" id="cancel"><span>취소</span></button>
+    </div>
+</div>
+<script type="module">
+    import appService from '/js/services/rest/appService.mjs'
+
+    (function () {
+        $("#content").removeClass('board-content');
+        $("#content").addClass('board-content2');
+
+        const uploadBtn = document.getElementById("btn-upload-img");
+        const imgInput = document.getElementById("sFileImg");
+
+        uploadBtn.addEventListener("click", (e) => {
+            console.log(imgInput.value)
+            if (imgInput.value) {
+                
+                FunLoadingBarStart();
+                
+                appService.upload(imgInput.files[0])
+                    .then(() => {
+                        //imgWrp.setAttribute("src", "/api/download/app");
+                        FunLoadingBarEnd();	
+                        $(".type-alert .popup-content").text("파일 업로드 성공");
+                        ui.popup.open('popupAlert');
+                        setTimeout("location.reload();", 1000);
+                    })
+                    .catch((err) => {
+                        console.error(err)
+                        $(".type-alert .popup-content").text("업로드 실패");
+                        ui.popup.open('popupAlert');
+                    })
+            }
+        })
+        document.getElementById("cancel").addEventListener("click", (e) => {
+            location.reload();
+        })
+    })();
+
+</script>

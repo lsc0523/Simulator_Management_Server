@@ -1,0 +1,18 @@
+apt-get update
+apt-get install mysql-server
+npm i -g npm-check-updates
+ncu -u
+npm install
+
+
+1) 시작
+sudo service mysql start
+
+2) 종료
+sudo service mysql stop
+
+3) 재시작
+sudo service mysql restart
+
+
+이후 sudo mysql 한 뒤에 use c9 하고 종료
