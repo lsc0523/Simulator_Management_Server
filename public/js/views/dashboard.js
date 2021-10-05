@@ -20,6 +20,8 @@ var dashboard = {
                     console.log(datas[0]);
                     innerHtml = datas.reduce((inner, curr, idx) => {                                                                      
                         return inner += ' <tr> ' +
+                            '<td>'+curr.pcsgname.substring(curr.pcsgname.indexOf('ko-KR')+6,curr.pcsgname.indexOf('|')) +'</td>'+
+                            '<td>'+curr.procname.substring(curr.procname.indexOf('ko-KR')+6,curr.procname.indexOf('|')) +'</td>'+
                             '<td>'+curr.proc_cd+'</td>'+
                             '<td>'+curr.new_ver+'</td>'+
                             '<td>'+((curr.OC === undefined || curr.OC === null) ? '-' : ((curr.OC.slice(0,(curr.OC.indexOf(' '))) != curr.new_ver) ? '<span class="txt-point">'+curr.OC+'</span>' : curr.OC ) ) +'</td>' +

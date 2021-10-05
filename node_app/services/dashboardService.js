@@ -10,12 +10,12 @@ const dashboardService = {
 
     retrieveAll: function () {
         return sequelize.query(
-            'select mst.proc_cd, mst.ESWA, mst.ESNA, mst.ESNB, mst.ESMI, mst.OC, first_tb.ver_nm as new_ver ' +
+            'select mst.proc_cd, mst.ESWA, mst.ESNA, mst.ESNB, mst.ESMI, mst.OC, first_tb.ver_nm as new_ver, pcsgname, procname ' +
             'from ' +
             '( ' +
             '    select * ' + 
             '    from ( ' +
-            '        select pgm.PROC_CD_IDX_NO, proc_tb.CMN_CD_NM  as PROC_CD , site_tb.CMN_CD as SITE_CD ' +
+            '        select pgm.PROC_CD_IDX_NO, proc_tb.CMN_CD_NM  as PROC_CD , site_tb.CMN_CD as SITE_CD, proc_tb.PCSGID, proc_tb.PROCID as PROCID ' +
             '           , concat(pgm.ver_nm ,\' (\', (select count(DISTINCT pc_idx_no ) from TB_GEBTR_PC_DLD_L tgpdl where rels_pgm_idx_no = pgm.idx_no ), \')\') as ver_nm ' +
             '        from TB_GEBTR_PGM_M as pgm ' +
             '            left outer join TB_GEBTR_CMN_C as proc_tb ' +
@@ -37,7 +37,9 @@ const dashboardService = {
             '                select max(IDX_NO) as idx_no  from TB_GEBTR_PGM_M ' +
             '                group by PROC_CD_IDX_NO ' +
             '                ) ) as first_tb ' +
-            '               on mst.proc_cd_idx_no = first_tb.proc_cd_idx_no ' 
+            '               on mst.proc_cd_idx_no = first_tb.proc_cd_idx_no ' +
+            'left outer join TB_MMD_PROCESSSEGMENT as pcsg on (mst.PCSGID = pcsg.PCSGID) ' + 
+            'left outer join TB_MMD_PROCESS as process on (mst.procid = process.procid) '
             , {raw: true, type: QueryTypes.SELECT}
         );
         

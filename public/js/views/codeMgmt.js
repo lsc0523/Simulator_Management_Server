@@ -22,6 +22,8 @@ var code = {
                             <td>${((page-1)*pageSize)+idx++}</td>
                             <td>${code.groupcode.gr_cd}</td>
                             <td>${code.groupcode.gr_cd_nm}</td>
+                            <td>${ code.processsegment === null ? " " : code.processsegment.pcsgname.substring(code.processsegment.pcsgname.indexOf('ko-KR')+6,code.processsegment.pcsgname.indexOf('|'))}</td>
+                            <td>${ code.process === null ? " " : code.process.procname.substring(code.process.procname.indexOf('ko-KR')+6,code.process.procname.indexOf('|'))}</td>
                             <td>${code.cmn_cd}</td>
                             <td>${code.cmn_cd_nm}</td>
                             <td>${code.use_yn === "1" ? "사용중" : "사용안함"}</td>
