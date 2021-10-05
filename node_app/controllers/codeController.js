@@ -14,11 +14,21 @@ const codeController = {
                             cmn_cd: code.cmn_cd,
                             cmn_cd_nm: code.cmn_cd_nm,
                             use_yn: code.use_yn,
+                            pcsgid: (code.pcsgid===undefined || code.pcsgid===null) ? null : code?.pcsgid,
+                            procid: (code.procid===undefined || code.procid===null) ? null : code?.procid,
                             groupcode: {
                                 idx_no: code.groupcode.idx_no,
                                 gr_cd: code.groupcode.gr_cd,
                                 gr_cd_nm: code.groupcode.gr_cd_nm,
                                 use_yn: code.groupcode.use_yn
+                            },
+                            process: (code.process===null) ? null : {
+                                procid : code.process.procid,
+                                procname : code.process.procname
+                            },
+                            processsegment: (code.processsegment===null) ? null : {
+                                pcsgid : code.processsegment.pcsgid,
+                                pcsgname : code.processsegment.pcsgname
                             }
                         }
                     })

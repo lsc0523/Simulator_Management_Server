@@ -1,5 +1,7 @@
 const CodeModel = require('../models/CodeModel');
 const GroupCodeModel = require('../models/GroupCodeModel');
+const ProcessModel = require('../models/ProcessModel');
+const ProcessSegmentModel = require('../models/ProcessSegmentModel');
 
 const codeService = {
 

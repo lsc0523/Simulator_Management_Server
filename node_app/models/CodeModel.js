@@ -1,6 +1,8 @@
 const sequelize = require('./connection');
 const { Model, DataTypes } = require('sequelize');
 const GroupCodeModel = require('./GroupCodeModel');
+const ProcessModel = requier('./ProcessModel');
+const ProcessSegmentModel = require("./ProcessSegmentModel");
 
 class CodeModel extends Model {
 
@@ -26,6 +28,14 @@ CodeModel.init({
     },
     use_yn: {
         type: DataTypes.BOOLEAN
+    },
+    pcsgid: {
+        type: DataTypes.STRING(200),
+        allowNull : true
+    },
+    procid: {
+        type: DataTypes.STRING(200),
+        allowNull : true
     }
 
 }, {
@@ -38,6 +48,16 @@ CodeModel.init({
 CodeModel.belongsTo(GroupCodeModel, {
     foreignKey: 'gr_idx_no',
     targetKey: 'idx_no'
+})
+
+CodeModel.belongsTo(ProcessModel, {
+    foreignKey: 'procid',
+    targetKey: 'procid'
+})
+
+CodeModel.belongsTo(GroupCodeModel, {
+    foreignKey: 'pcsgid',
+    targetKey: 'pcsgid'
 })
 
 module.exports = CodeModel;
