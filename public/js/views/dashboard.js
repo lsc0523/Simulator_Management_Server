@@ -1,4 +1,5 @@
-﻿import codeService from '../services/rest/codeService.mjs';
+﻿import { indexOf } from 'lodash';
+import codeService from '../services/rest/codeService.mjs';
 import dashboardService from '../services/rest/dashboardService.mjs';
 
 var dashboard = {
@@ -82,6 +83,8 @@ var dashboard = {
                 // 
                 innerSite = datas.reduce((inner, curr, idx) => {                        
                     return inner += `<tr>
+                    <td>${curr.pcsgname.substring(curr.pcsgname.indexOf('ko-KR')+6,curr.pcsgname.indexOf('|'))}</td>
+                    <td>${curr.procname.substring(curr.procname.indexOf('ko-KR')+6,curr.procname,indexOf('|'))}</td>
                     <td class="bg">
                         <button type="botton" class="call-popup" data-index="${curr.idx_no}" data-proccd="${curr.proc_cd}" id="procDtl_${curr.idx_no}"><span>${curr.proc_cd}</span></button>
                     </td>
@@ -132,6 +135,8 @@ var dashboard = {
                             if(j===0){verList=''}
                             
                             verList += '<tr>' +
+                                    '    <td>' + verDatas[j].pcsgname.substring(verDatas[j].pcsgname.indexOf('ko-KR')+6,verDatas[j].pcsgname.indexOf('|')) + '</td' +
+                                    '    <td>' + verDatas[j].procname.substring(verDatas[j].procname.indexOf('ko-KR')+6,verDatas[j].procname.indexOf('|')) + '</td' +
                                     '    <td>' + verDatas[j].proc_cd + '</td>' +
                                     '    <td> ' +
                                     (verDatas[j].ins_pgm_ver === null ? '' : ((verDatas[j].ins_new_ver === verDatas[j].ins_pgm_ver) ? verDatas[j].ins_pgm_ver : '<span class="txt-point">'+ verDatas[j].ins_pgm_ver + '</span>' )) +
@@ -171,9 +176,13 @@ var dashboard = {
                                                             <col style="width:20%" />
                                                             <col style="width:20%" />
                                                             <col style="width:20%" />
+                                                            <col style="width:20%" />
+                                                            <col style="width:20%" />
                                                         </colgroup>
                                                         <thead>
                                                             <tr>
+                                                                <th scope="col">공정군</th>
+                                                                <th scope="col">공정</th>
                                                                 <th scope="col">항목</th>
                                                                 <th scope="col">현재 설치 버전</th>
                                                                 <th scope="col">파일 설치 일자</th>
@@ -186,6 +195,8 @@ var dashboard = {
                                                 <div class="tbl-body-scroll">
                                                     <table>
                                                         <colgroup>
+                                                            <col style="width:20%" />
+                                                            <col style="width:20%" />
                                                             <col style="width:20%" />
                                                             <col style="width:20%" />
                                                             <col style="width:20%" />

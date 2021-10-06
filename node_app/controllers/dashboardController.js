@@ -28,7 +28,9 @@ const dashboardController = {
                             proc_cd: data.cmn_cd,
                             proc_cd_nm: data.cmn_cd_nm,                            
                             ver_nm: data.ver_nm,
-                            ste_rels_dtm: data.ste_rels_dtm
+                            ste_rels_dtm: data.ste_rels_dtm,
+                            pcsgname : data.pcsgname,
+                            procname : data.procname
                         }
                     })
                     resolve(filteredData)
@@ -52,7 +54,7 @@ const dashboardController = {
                             pc_id: data.idx_no,
                             pc_nm: data.pc_nm,                            
                             pc_ip: data.pc_ip,
-		    loc_desc: data.loc_desc                        
+		                    loc_desc: data.loc_desc                        
                         }
                     })
                     resolve( filteredData)
@@ -78,7 +80,9 @@ const dashboardController = {
                             rels_dtm: data.RELS_DTM  ,
                             dwn_pgm_ver: data.dwn_pgm_ver,
                             dwn_new_ver: data.dwn_new_ver,
-                            dld_dtm: data.DLD_DTM                          
+                            dld_dtm: data.DLD_DTM,
+                            pcsgname: data.pcsgname,
+                            procname: data.procname                      
                         }
                     })
                     resolve( filteredData)
